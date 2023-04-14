@@ -1,10 +1,21 @@
 import java.util.ArrayList;
 import java.util.Stack;
 
+
 public class Main {
 
     public static void main(String[] args) {
         //create card deck double loop
+
+        StackExtended fullDeck = generateDeck();
+        
+        System.out.println(fullDeck.toString());
+        fullDeck.shuffle();
+        //testing shuffle
+        System.out.println(fullDeck.toString());
+
+    }
+    public static StackExtended generateDeck(){
         StackExtended fullDeck = new StackExtended();
         String[] suiteArray = {"Hearts", "Clover", "Diamonds", "Spades"};
         for (int i = 0; i < suiteArray.length; i++) {
@@ -15,10 +26,6 @@ public class Main {
 
 
         }
-        System.out.println(fullDeck.toString());
-        fullDeck.shuffle();
-        //testing shuffle
-        System.out.println(fullDeck.toString());
-
+        return fullDeck;
     }
 }
