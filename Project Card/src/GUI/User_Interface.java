@@ -28,7 +28,7 @@ public class User_Interface {
 	JFrame CardGameFrame = new JFrame();
 
 	//Draw deck object
-	public DrawUIObject DrawTable;
+	public DrawUIObject DrawTable=new DrawUIObject();
 	
 	
 	public void InitializeUI(){

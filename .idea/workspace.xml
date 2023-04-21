@@ -37,9 +37,9 @@
     "project.structure.side.proportion": "0.0"
   }
 }]]></component>
-  <component name="RunManager" selected="Application.Main">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Main.Main" />
+  <component name="RunManager" selected="Application.JackOfAllTrades">
+    <configuration name="JackOfAllTrades" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main.JackOfAllTrades" />
       <module name="Project Card" />
       <extension name="coverage">
         <pattern>
@@ -66,7 +66,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
+        <item itemvalue="Application.JackOfAllTrades" />
         <item itemvalue="Application.UITest" />
       </list>
     </recent_temporary>

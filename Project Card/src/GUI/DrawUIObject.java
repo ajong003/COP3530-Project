@@ -17,7 +17,8 @@ import javax.swing.border.TitledBorder;
 
 public class DrawUIObject {
 
-	Deck<Card> deck;
+	//asociated deck object
+	public Deck<Card> deck;
 
 	public JPanel InitializeCard(){
 		
@@ -69,10 +70,10 @@ public class DrawUIObject {
 	
 	
 	
-	
+	//transfer top card from associated deck to player card list
 	public class ActivateCardListener implements ActionListener{
 		   public void actionPerformed(ActionEvent Click) {
-			   
+			   System.out.println("test");
 		   }
 	}
 
