@@ -1,4 +1,4 @@
-package Main;
+package MAIN;
 
 //class for representing playing card objects
 public class Card implements Comparable<Card>{

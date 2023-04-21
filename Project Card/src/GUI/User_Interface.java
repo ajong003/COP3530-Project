@@ -277,6 +277,9 @@ public class User_Interface {
 		
 		
 		CardGameFrame.setVisible(true);
+
 	}
+
+
 	
 }
