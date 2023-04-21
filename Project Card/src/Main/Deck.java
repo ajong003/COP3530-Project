@@ -1,16 +1,18 @@
+package Main;
+
 import java.util.Collections;
 import java.util.Stack;
 
-public class StackExtended extends Stack<Card> {
+public class Deck<T extends Card> extends Stack<T>{
 
 
-    public StackExtended(){
+    public Deck(){
 
     }
 
 
     //card can only be pushed to stack if suite and or rank matches
-    public boolean pushCheckSuite(Card card) {
+    public boolean pushCheckSuite(T card) {
         if (this.peek().getSuite().equals(card.getSuite())) {
             this.push(card);
             return true;
