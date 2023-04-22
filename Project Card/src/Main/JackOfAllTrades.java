@@ -100,7 +100,7 @@ public class JackOfAllTrades {
         }
         //tests if lane matches card rank or suite, or is empty
         public boolean checkMatch(Deck<Card> lane,Card selectedCard){
-            if (lane.isEmpty()||(lane.peek().getRank()==selectedCard.getRank() || lane.peek().getSuite().equals(selectedCard.getSuite()))) {
+            if (lane.isEmpty()||(lane.peek().getRank()==selectedCard.getRank() || lane.peek().getSuite().equals(selectedCard.getSuite()))||selectedCard.getRank()==11) {
                 //card linked to the selected card GUI object
                 p1Cards.remove(selectedCard);
                 GameUI.generateP1Cards(-1);
@@ -166,7 +166,7 @@ public class JackOfAllTrades {
             Deck<Card> fullDeck = new Deck<Card>();
             String[] suiteArray = {"Hearts", "Clubs", "Diamonds", "Spades"};
             for (int i = 0; i < suiteArray.length; i++) {
-                for (int k = 0; k < 13; k++) {
+                for (int k = 1 ;k <= 13; k++) {
                     fullDeck.push(new Card(suiteArray[i], k, "Normal card"));
 
                 }
@@ -174,11 +174,25 @@ public class JackOfAllTrades {
 
             }
             //hardcode special card descriptions
-            fullDeck.findCard(0,"Clubs").setDescription("<html>2 Random Cards in the opponent's hand are Destroyed</html>");
-            fullDeck.findCard(0,"Hearts").setDescription("<html>The nextCard Placed by the User is not lost, User also gets to play an extra card this turn</html>");
-            fullDeck.findCard(0,"Diamonds").setDescription("<html>The next attack against the user, in this lane, is reflected at the opponent</html>");
-            fullDeck.findCard(0,"Spades").setDescription("<html>Nullify all active effects on this Lane, the User may also play an extra card this turn</html>");
+            fullDeck.findCard(1,"Clubs").setDescription("<html>2 Random Cards in the opponent's hand are Destroyed</html>");
+            fullDeck.findCard(1,"Hearts").setDescription("<html>The nextCard Placed by the User is not lost, User also gets to play an extra card this turn</html>");
+            fullDeck.findCard(1,"Diamonds").setDescription("<html>The next attack against the user, in this lane, is reflected at the opponent</html>");
+            fullDeck.findCard(1,"Spades").setDescription("<html>Nullify all active effects on this Lane, the User may also play an extra card this turn</html>");
 
+            fullDeck.findCard(11,"Hearts").setDescription("<html>Regain HP equal to the rank of the current card on the lane</html>");
+            fullDeck.findCard(11,"Spades").setDescription("<html>Expose 2 random cards of the opponent</html>");
+            fullDeck.findCard(11,"Diamonds").setDescription("<html>Next card played on this lane deals no damage</html>");
+            fullDeck.findCard(11,"Clubs").setDescription("<html>Next card played on this lane deals double damage</html>");
+
+            fullDeck.findCard(12,"Hearts").setDescription("<html>[Special effect]</html>");
+            fullDeck.findCard(12,"Spades").setDescription("<html>[Special effect]</html>");
+            fullDeck.findCard(12,"Diamonds").setDescription("<html>[Special effect]</html>");
+            fullDeck.findCard(12,"Clubs").setDescription("<html>[Special effect]</html>");
+
+            fullDeck.findCard(13,"Hearts").setDescription("<html>[Special effect]</html>");
+            fullDeck.findCard(13,"Spades").setDescription("<html>[Special effect]</html>");
+            fullDeck.findCard(13,"Diamonds").setDescription("<html>[Special effect]</html>");
+            fullDeck.findCard(13,"Clubs").setDescription("<html>[Special effect]</html>");
 
             return fullDeck;
         }

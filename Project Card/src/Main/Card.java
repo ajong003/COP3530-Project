@@ -40,11 +40,11 @@ public class Card implements Comparable<Card>{
 
     @Override
     public String toString() {
-        if(rank>0&&rank<11){
+        if(rank>1&&rank<11){
             return rank + " of " + suite;
         }else{
             switch (rank){
-                case 0:
+                case 1:
                     return "Ace of " + suite;
 
                 case 11:
