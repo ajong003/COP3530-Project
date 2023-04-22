@@ -29,6 +29,9 @@ public class Card implements Comparable<Card>{
     public String getDescription(){
         return description;
     }
+    public void setDescription(String description){
+        this.description=description;
+    }
 
     //TODO
     public int getEffect(){

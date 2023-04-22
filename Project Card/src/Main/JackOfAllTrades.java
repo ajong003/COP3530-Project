@@ -173,8 +173,11 @@ public class JackOfAllTrades {
 
 
             }
-            //Hardcore special card descriptions
-
+            //hardcode special card descriptions
+            fullDeck.findCard(0,"Clubs").setDescription("<html>2 Random Cards in the opponent's hand are Destroyed</html>");
+            fullDeck.findCard(0,"Hearts").setDescription("<html>The nextCard Placed by the User is not lost, User also gets to play an extra card this turn</html>");
+            fullDeck.findCard(0,"Diamonds").setDescription("<html>The next attack against the user, in this lane, is reflected at the opponent</html>");
+            fullDeck.findCard(0,"Spades").setDescription("<html>Nullify all active effects on this Lane, the User may also play an extra card this turn</html>");
 
 
             return fullDeck;

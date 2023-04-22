@@ -61,6 +61,8 @@ public class CardUIObject {
 //			this.basicValue = String.valueOf(card.toString().charAt(0));
 //		}else{
 //			this.basicValue = card.toString().substring(0,2);
+
+
 //		}
 
 	}
