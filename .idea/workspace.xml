@@ -103,7 +103,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/Project Card/src/GUI/User_Interface.java</url>
-          <line>103</line>
+          <line>105</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>

@@ -38,6 +38,8 @@ public class User_Interface {
 
 	JLabel  count;
 
+	public boolean laneMatch = false;
+
 
 
 
@@ -157,18 +159,21 @@ public class User_Interface {
 		Lane1 = new PlacementUIObject(this);
 		JPanel Place1Panel = new JPanel();
 		Place1Panel = Lane1.InitializeCard();
+		Lane1.PlaceCardBttn.setName("Lane1");
 
 		Place1Panel.setBounds(450, 150, 150, 230);
 		
 		Lane2 = new PlacementUIObject(this);
 		JPanel Place2Panel = new JPanel();
 		Place2Panel = Lane2.InitializeCard();
+		Lane2.PlaceCardBttn.setName("Lane2");
 
 		Place2Panel.setBounds(610, 150, 150, 230);
 		
 		Lane3 = new PlacementUIObject(this);
 		JPanel Place3Panel = new JPanel();
 		Place3Panel = Lane3.InitializeCard();
+		Lane3.PlaceCardBttn.setName("Lane3");
 
 		Place3Panel.setBounds(770, 150, 150, 230);
 		//Place Objects

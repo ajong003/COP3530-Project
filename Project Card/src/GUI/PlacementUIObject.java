@@ -14,7 +14,7 @@ import javax.swing.border.TitledBorder;
 
 public class PlacementUIObject {
 
-	JButton PlaceCardBttn;
+	public JButton PlaceCardBttn;
 	JPanel CardPanel;
 	Border blackline;
 	TitledBorder title;
@@ -34,7 +34,7 @@ public class PlacementUIObject {
 	BorderLayout BorderLay = new BorderLayout();
 	GridLayout GridLay = new GridLayout();
 
-	Deck<Card> lane;
+	public Deck<Card> lane;
 
 
 	public PlacementUIObject(User_Interface UI) {
@@ -51,6 +51,7 @@ public class PlacementUIObject {
 		HiddenLabel = new JLabel("?");
 		cardDescriptionLabel = new JLabel("" + Description);
 		PlaceCardBttn = new JButton("Place");
+
 		CardPanel = new JPanel();
 
 		blackline = BorderFactory.createLineBorder(Color.black);
@@ -145,14 +146,18 @@ public class PlacementUIObject {
 		public void actionPerformed(ActionEvent Click) {
 
 			if (UI.isCardSelected == true) {
-				PlaceCard(UI.P1SelectedCard);
-				//UI.P1SelectedCard.ClearCard();
-				UI.isCardSelected = false;
 
-				//add card to logical linked lane
-				lane.push(UI.P1SelectedCard.card);
-				System.out.println("lane after adding");
-				System.out.println(lane);
+				if(lane.isEmpty()|| UI.P1SelectedCard.card.getRank()==lane.peek().getRank() || UI.P1SelectedCard.card.getSuite().equals(lane.peek().getSuite())){
+					PlaceCard(UI.P1SelectedCard);
+					//UI.P1SelectedCard.ClearCard();
+					UI.isCardSelected = false;
+
+					//add card to logical linked lane
+					lane.push(UI.P1SelectedCard.card);
+					System.out.println("lane after adding");
+					System.out.println(lane);
+				}
+
 			}
 			else {
 				//No Card Selected
