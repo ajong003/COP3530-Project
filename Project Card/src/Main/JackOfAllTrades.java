@@ -24,6 +24,9 @@ public class JackOfAllTrades {
     //empty playing lanes 1-3
     public Deck<Card> lane1 = new Deck<Card>(), lane2 = new Deck<Card>(), lane3 = new Deck<Card>();
 
+    int p1HP=100, cpuHP=100;
+    
+
     //initialize everything
     public JackOfAllTrades() {
         //draw deck
@@ -88,6 +91,7 @@ public class JackOfAllTrades {
             }
 
         }
+        //tests if lane matches card rank or suite, or is empty
         public boolean checkMatch(Deck<Card> lane,Card selectedCard){
             if (lane.isEmpty()||(lane.peek().getRank()==selectedCard.getRank() || lane.peek().getSuite().equals(selectedCard.getSuite()))) {
                 //card linked to the selected card GUI object
