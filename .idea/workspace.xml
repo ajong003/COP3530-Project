@@ -32,9 +32,11 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/Users/Alex/Downloads/COP3530-Project-Luis-s-Branch(1)/COP3530-Project-Luis-s-Branch/COP3530-Project-main/Project Card/src/GUI/CardUIObject.java",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0"
+    "project.structure.side.proportion": "0.0",
+    "two.files.diff.last.used.file": "C:/Users/Alex/Downloads/COP3530-Project-Luis-s-Branch(1)/COP3530-Project-Luis-s-Branch/COP3530-Project-main/Project Card/src/GUI/CardUIObject.java"
   }
 }]]></component>
   <component name="RunManager" selected="Application.Main">
@@ -80,8 +82,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
-        <item itemvalue="Application.JackOfAllTrades" />
         <item itemvalue="Application.UITest" />
+        <item itemvalue="Application.JackOfAllTrades" />
       </list>
     </recent_temporary>
   </component>
@@ -95,5 +97,16 @@
       <updated>1682102194730</updated>
     </task>
     <servers />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/Project Card/src/GUI/User_Interface.java</url>
+          <line>103</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

@@ -6,11 +6,14 @@ public class Card implements Comparable<Card>{
     String suite;
     //0=ace, 11 jack, 12, queen, 13 king
     int rank;
+    String description;
+
 
     //card object constructor
-    public Card(String suite, int rank){
+    public Card(String suite, int rank,String description){
         this.suite=suite;
         this.rank=rank;
+        this.description = description;
     }
 
     //returns the difference in card rank
@@ -22,6 +25,9 @@ public class Card implements Comparable<Card>{
     }
     public int getRank(){
         return rank;
+    }
+    public String getDescription(){
+        return description;
     }
 
     //TODO
