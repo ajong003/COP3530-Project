@@ -8,6 +8,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import Main.Card;
+
 
 public class User_Interface {
 
@@ -21,6 +23,9 @@ public class User_Interface {
 	JLabel HPLabel2 = new JLabel("HP:");
 	JLabel P1HPLabel = new JLabel("100 / 100");
 	JLabel P2HPLabel = new JLabel("100 / 100");
+	
+	CardUIObject P1SelectedCard;
+	boolean isCardSelected;
 	
 	JButton ExitButton = new JButton("Exit");
 	
@@ -63,45 +68,45 @@ public class User_Interface {
 				
 		
 		//P1CardSlots
-			CardUIObject P1Card1 = new CardUIObject("King of Spades","K", 0, "Spades", 5, "Does Spades Stuff");
+			CardUIObject P1Card1 = new CardUIObject("King of Spades","K", 0, "Spades", 5, "Does Spades Stuff", this);
 			JPanel PlayerCardSlot1 = new JPanel();
 			PlayerCardSlot1 = P1Card1.InitializeCard();
 			PlayerCardSlot1 = P1Card1.ReInitializeCard("Queen of Spades","Q", 0, "Spades", 6, "Does Spades Stuff");
 			
-			CardUIObject P1Card2 = new CardUIObject("Queen of Spades","Q", 0, "Spades", 6, "Does Spades Stuff");
+			CardUIObject P1Card2 = new CardUIObject("Queen of Spades","Q", 0, "Spades", 6, "Does Spades Stuff", this);
 			JPanel PlayerCardSlot2 = new JPanel();
 			PlayerCardSlot2 = P1Card2.InitializeCard();
 			PlayerCardSlot2 = P1Card2.ClearCard();
 			
-			CardUIObject P1Card3 = new CardUIObject("Ace of Spades","A", 0, "Spades", 7, "Does Spades Stuff");
+			CardUIObject P1Card3 = new CardUIObject("Ace of Spades","A", 0, "Spades", 7, "Does Spades Stuff", this);
 			JPanel PlayerCardSlot3 = new JPanel();
 			PlayerCardSlot3 = P1Card3.InitializeCard();
 			
-			CardUIObject P1Card4 = new CardUIObject("Jack of Spades","J", 0, "Spades", 8, "Does Spades Stuff");
+			CardUIObject P1Card4 = new CardUIObject("Jack of Spades","J", 0, "Spades", 8, "Does Spades Stuff", this);
 			JPanel PlayerCardSlot4 = new JPanel();
 			PlayerCardSlot4 = P1Card4.InitializeCard();
 			
-			CardUIObject P1Card5 = new CardUIObject("10 of Spades","10", 10, "Spades", 0, "Does Spades Stuff");
+			CardUIObject P1Card5 = new CardUIObject("10 of Spades","10", 10, "Spades", 0, "Does Spades Stuff", this);
 			JPanel PlayerCardSlot5 = new JPanel();
 			PlayerCardSlot5 = P1Card5.InitializeCard();
 			
-			CardUIObject P1Card6 = new CardUIObject("9 of Spades", "9", 9, "Spades", 0, "Does Spades Stuff");
+			CardUIObject P1Card6 = new CardUIObject("9 of Spades", "9", 9, "Spades", 0, "Does Spades Stuff", this);
 			JPanel PlayerCardSlot6 = new JPanel();
 			PlayerCardSlot6 = P1Card6.InitializeCard();
 			
-			CardUIObject P1Card7 = new CardUIObject("8 of Spades", "8", 8, "Spades", 0, "Does Spades Stuff");
+			CardUIObject P1Card7 = new CardUIObject("8 of Spades", "8", 8, "Spades", 0, "Does Spades Stuff", this);
 			JPanel PlayerCardSlot7 = new JPanel();
 			PlayerCardSlot7 = P1Card7.InitializeCard();
 			
-			CardUIObject P1Card8 = new CardUIObject("7 of Spades", "7", 7, "Spades", 0, "Does Spades Stuff");
+			CardUIObject P1Card8 = new CardUIObject("7 of Spades", "7", 7, "Spades", 0, "Does Spades Stuff", this);
 			JPanel PlayerCardSlot8 = new JPanel();
 			PlayerCardSlot8 = P1Card8.InitializeCard();
 			
-			CardUIObject P1Card9 = new CardUIObject("6 of Spades", "6", 6, "Spades", 0, "Does Spades Stuff");
+			CardUIObject P1Card9 = new CardUIObject("6 of Spades", "6", 6, "Spades", 0, "Does Spades Stuff", this);
 			JPanel PlayerCardSlot9 = new JPanel();
 			PlayerCardSlot9 = P1Card9.InitializeCard();
 			
-			CardUIObject P1Card10 = new CardUIObject("5 of Spades", "5", 5, "Spades", 0, "Does Spades Stuff");
+			CardUIObject P1Card10 = new CardUIObject("5 of Spades", "5", 5, "Spades", 0, "Does Spades Stuff", this);
 			JPanel PlayerCardSlot10 = new JPanel();
 			PlayerCardSlot10 = P1Card10.InitializeCard();
 		//P1Card Slots
@@ -109,52 +114,52 @@ public class User_Interface {
 		
 		
 		//P2CardSlots
-			CardUIObject P2Card1 = new CardUIObject("King of Spades","K", 0, "Spades", 5, "Does Spades Stuff");
+			CardUIObject P2Card1 = new CardUIObject("King of Spades","K", 0, "Spades", 5, "Does Spades Stuff", this);
 			JPanel Player2CardSlot1 = new JPanel();
 			Player2CardSlot1 = P2Card1.InitializeCard();
 			Player2CardSlot1 = P2Card1.HideCard();
 			
-			CardUIObject P2Card2 = new CardUIObject("Queen of Spades","Q", 0, "Spades", 6, "Does Spades Stuff");
+			CardUIObject P2Card2 = new CardUIObject("Queen of Spades","Q", 0, "Spades", 6, "Does Spades Stuff", this);
 			JPanel Player2CardSlot2 = new JPanel();
 			Player2CardSlot2 = P2Card2.InitializeCard();
 			Player2CardSlot2 = P2Card2.HideCard();
 			
-			CardUIObject P2Card3 = new CardUIObject("Ace of Spades","A", 0, "Spades", 7, "Does Spades Stuff");
+			CardUIObject P2Card3 = new CardUIObject("Ace of Spades","A", 0, "Spades", 7, "Does Spades Stuff", this);
 			JPanel Player2CardSlot3 = new JPanel();
 			Player2CardSlot3 = P2Card3.InitializeCard();
 			Player2CardSlot3 = P2Card3.HideCard();
 			
-			CardUIObject P2Card4 = new CardUIObject("Jack of Spades","J", 0, "Spades", 8, "Does Spades Stuff");
+			CardUIObject P2Card4 = new CardUIObject("Jack of Spades","J", 0, "Spades", 8, "Does Spades Stuff", this);
 			JPanel Player2CardSlot4 = new JPanel();
 			Player2CardSlot4 = P2Card4.InitializeCard();
 			Player2CardSlot4 = P2Card4.HideCard();
 			
-			CardUIObject P2Card5 = new CardUIObject("10 of Spades","10", 10, "Spades", 0, "Does Spades Stuff");
+			CardUIObject P2Card5 = new CardUIObject("10 of Spades","10", 10, "Spades", 0, "Does Spades Stuff", this);
 			JPanel Player2CardSlot5 = new JPanel();
 			Player2CardSlot5 = P2Card5.InitializeCard();
 			Player2CardSlot5 = P2Card5.HideCard();
 			
-			CardUIObject P2Card6 = new CardUIObject("9 of Spades", "9", 9, "Spades", 0, "Does Spades Stuff");
+			CardUIObject P2Card6 = new CardUIObject("9 of Spades", "9", 9, "Spades", 0, "Does Spades Stuff", this);
 			JPanel Player2CardSlot6 = new JPanel();
 			Player2CardSlot6 = P2Card6.InitializeCard();
 			Player2CardSlot6 = P2Card6.HideCard();
 			
-			CardUIObject P2Card7 = new CardUIObject("8 of Spades", "8", 8, "Spades", 0, "Does Spades Stuff");
+			CardUIObject P2Card7 = new CardUIObject("8 of Spades", "8", 8, "Spades", 0, "Does Spades Stuff", this);
 			JPanel Player2CardSlot7 = new JPanel();
 			Player2CardSlot7 = P2Card7.InitializeCard();
 			Player2CardSlot7 = P2Card7.HideCard();
 			
-			CardUIObject P2Card8 = new CardUIObject("7 of Spades", "7", 7, "Spades", 0, "Does Spades Stuff");
+			CardUIObject P2Card8 = new CardUIObject("7 of Spades", "7", 7, "Spades", 0, "Does Spades Stuff", this);
 			JPanel Player2CardSlot8 = new JPanel();
 			Player2CardSlot8 = P2Card8.InitializeCard();
 			Player2CardSlot8 = P2Card8.HideCard();
 			
-			CardUIObject P2Card9 = new CardUIObject("6 of Spades", "6", 6, "Spades", 0, "Does Spades Stuff");
+			CardUIObject P2Card9 = new CardUIObject("6 of Spades", "6", 6, "Spades", 0, "Does Spades Stuff", this);
 			JPanel Player2CardSlot9 = new JPanel();
 			Player2CardSlot9 = P2Card9.InitializeCard();
 			Player2CardSlot9 = P2Card9.HideCard();
 			
-			CardUIObject P2Card10 = new CardUIObject("5 of Spades", "5", 5, "Spades", 0, "Does Spades Stuff");
+			CardUIObject P2Card10 = new CardUIObject("5 of Spades", "5", 5, "Spades", 0, "Does Spades Stuff", this);
 			JPanel Player2CardSlot10 = new JPanel();
 			Player2CardSlot10 = P2Card10.InitializeCard();
 			Player2CardSlot10 = P2Card10.HideCard();
@@ -169,19 +174,19 @@ public class User_Interface {
 		//DrawObject
 		
 		//Place Objects
-		PlacementUIObject Place1 = new PlacementUIObject();
+		PlacementUIObject Place1 = new PlacementUIObject(this);
 		JPanel Place1Panel = new JPanel();
 		Place1Panel = Place1.InitializeCard();
 
 		Place1Panel.setBounds(450, 150, 150, 230);
 		
-		PlacementUIObject Place2 = new PlacementUIObject();
+		PlacementUIObject Place2 = new PlacementUIObject(this);
 		JPanel Place2Panel = new JPanel();
 		Place2Panel = Place2.InitializeCard();
 
 		Place2Panel.setBounds(610, 150, 150, 230);
 		
-		PlacementUIObject Place3 = new PlacementUIObject();
+		PlacementUIObject Place3 = new PlacementUIObject(this);
 		JPanel Place3Panel = new JPanel();
 		Place3Panel = Place3.InitializeCard();
 

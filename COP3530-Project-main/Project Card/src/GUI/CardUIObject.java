@@ -30,26 +30,31 @@ public class CardUIObject {
 	public String CardName, basicValue;
 	public String Suite;
 	public String Description;
+	public User_Interface UI;
 	public int cardValue, specialValue;
 	
 	JLabel cardSuiteLabel, basicValueLabel, HiddenLabel, cardDescriptionLabel;
 	JButton SelectCard;
 	JPanel CardPanel;
-    Border blackline;
+    Border blackline, selectedLine;
     TitledBorder title;
+    
+    CardUIObject self = this;
     
     BorderLayout BorderLay = new BorderLayout();
     GridLayout GridLay = new GridLayout();
     
 	
 	
-	public CardUIObject(String cardName, String basicValue, int cardValue, String suite, int specialValue, String Description) {
+	public CardUIObject(String cardName, String basicValue, int cardValue, String suite, int specialValue, String Description, User_Interface UI) {
 		CardName = cardName;
 		this.Suite = suite;
 		this.cardValue = cardValue;
 		this.specialValue = specialValue;
 		this.Description = Description;
 		this.basicValue = basicValue;
+		
+		this.UI = UI;
 
 	}
 	
@@ -68,6 +73,8 @@ public class CardUIObject {
 	    
 	    
 	    blackline = BorderFactory.createLineBorder(Color.black);
+	    selectedLine = BorderFactory.createLineBorder(Color.orange);
+	    
 	    CardPanel.setBackground(Color.white);
 	    SelectCard.setBackground(Color.white);
 	    
@@ -170,14 +177,37 @@ public class CardUIObject {
 		return(CardPanel);
 	}
 	
+	public void SelectCard() {
+		title = BorderFactory.createTitledBorder(selectedLine, "" + CardName);
+		   title.setTitleJustification(TitledBorder.CENTER);
+		   SelectCard.setBorder(title);
+	}
+	
+	public void UnselectCard() {
+		title = BorderFactory.createTitledBorder(blackline, "" + CardName);
+		   title.setTitleJustification(TitledBorder.CENTER);
+		   SelectCard.setBorder(title);
+	}
 	
 	//Card Pressed Button
 	public class SelectCardListener implements ActionListener{
 		
 		   public void actionPerformed(ActionEvent Click) {
 			   
+			   if (UI.isCardSelected == true) {
+				   UI.P1SelectedCard.UnselectCard();
+				   UI.P1SelectedCard = self;
+				   UI.isCardSelected = true;
+				   SelectCard();
+			   }
+			   else {
+				   UI.P1SelectedCard = self;
+				   UI.isCardSelected = true;
+				   SelectCard();
+			   }
 			   
 		   }
+		   
 	}
 	
 	
