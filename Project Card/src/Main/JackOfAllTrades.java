@@ -83,7 +83,9 @@ public class JackOfAllTrades {
                         UI.generateP1Cards();
                         System.out.println("p1cards after placing");
                         System.out.println(p1Cards);
+
                     }
+                    break;
                 case "Lane2":
                     if (lane2.isEmpty()||(lane2.peek().getRank()==selectedCard.getRank() || lane2.peek().getSuite().equals(selectedCard.getSuite()))) {
                         //card linked to the selected card GUI object
@@ -91,7 +93,9 @@ public class JackOfAllTrades {
                         UI.generateP1Cards();
                         System.out.println("p1cards after placing");
                         System.out.println(p1Cards);
+
                     }
+                    break;
                 case "Lane3":
                     if (lane3.isEmpty()||(lane3.peek().getRank()==selectedCard.getRank() || lane3.peek().getSuite().equals(selectedCard.getSuite()))) {
                         //card linked to the selected card GUI object
@@ -99,7 +103,9 @@ public class JackOfAllTrades {
                         UI.generateP1Cards();
                         System.out.println("p1cards after placing");
                         System.out.println(p1Cards);
+
                     }
+                    break;
             }
 
         }}
