@@ -25,6 +25,13 @@ public class Deck<T extends Card> extends Stack<T>{
     public void shuffle(){
         Collections.shuffle(this);
     }
+    public Card findCard(int rank, String suite){
+        for(Card card:this){
+            if (rank==card.getRank() && suite.equals(card.getSuite())){
+                return card;
+            }
+        }return null;
+    }
 
 
 }

@@ -28,17 +28,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Users/Alex/Downloads/COP3530-Project-Luis-s-Branch(1)/COP3530-Project-Luis-s-Branch/COP3530-Project-main/Project Card/src/GUI/CardUIObject.java",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "two.files.diff.last.used.file": "C:/Users/Alex/Downloads/COP3530-Project-Luis-s-Branch(1)/COP3530-Project-Luis-s-Branch/COP3530-Project-main/Project Card/src/GUI/CardUIObject.java"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Alex/Downloads/COP3530-Project-Luis-s-Branch(1)/COP3530-Project-Luis-s-Branch/COP3530-Project-main/Project Card/src/GUI/CardUIObject.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;two.files.diff.last.used.file&quot;: &quot;C:/Users/Alex/Downloads/COP3530-Project-Luis-s-Branch(1)/COP3530-Project-Luis-s-Branch/COP3530-Project-main/Project Card/src/GUI/CardUIObject.java&quot;
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="GUI" />
+    </key>
+  </component>
   <component name="RunManager" selected="Application.Main">
     <configuration name="JackOfAllTrades" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="MAIN.JackOfAllTrades" />
@@ -103,9 +108,13 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/Project Card/src/GUI/User_Interface.java</url>
-          <line>105</line>
+          <line>115</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.util.EmptyStackException" package="java.util" />
+          <option name="timeStamp" value="7" />
+        </breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

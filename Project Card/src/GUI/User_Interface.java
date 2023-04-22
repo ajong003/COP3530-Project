@@ -10,9 +10,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.xml.datatype.Duration;
 
 
 public class User_Interface {
+
+	MainMenuUI MainMenu;
 
 	String PlayerName = "Player";
 	int CurrentCardSlots = 0;
@@ -32,13 +35,20 @@ public class User_Interface {
 
 	public CardUIObject P1SelectedCard;
 
-	boolean isCardSelected;
+	public boolean isCardSelected;
 
 	public PlacementUIObject Lane1, Lane2, Lane3;
 
 	JLabel  count;
 
 	public boolean laneMatch = false;
+
+	JPanel P2UIPanel;
+
+	JPanel P1UIPanel;
+
+	public int P1HP;
+	public int P2HP;
 
 
 
@@ -56,8 +66,8 @@ public class User_Interface {
 		P1CardList=list;
 	}
 	
-	public void InitializeUI(){
-
+	public void InitializeUI(MainMenuUI MainMenu){
+		this.MainMenu = MainMenu;
 		
 		CardGameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -72,7 +82,7 @@ public class User_Interface {
 		
 		
 		
-		JPanel P1UIPanel = new JPanel();
+		P1UIPanel = new JPanel();
 			P1UIPanel.add(PlayerNameLabel);
 			P1UIPanel.add(HPLabel1);
 			P1UIPanel.add(P1HPLabel);
@@ -80,7 +90,7 @@ public class User_Interface {
 			
 			
 		
-		JPanel P2UIPanel = new JPanel();
+		P2UIPanel = new JPanel();
 			P2UIPanel.add(Player2NameLabel);
 			P2UIPanel.add(HPLabel2);
 			P2UIPanel.add(P2HPLabel);
@@ -269,7 +279,7 @@ public class User_Interface {
 		CardGameFrame.getContentPane().add(Place3Panel);
 		
 		
-		CardGameFrame.setVisible(true);
+		//CardGameFrame.setVisible(true);
 
 	}
 
@@ -293,21 +303,65 @@ public class User_Interface {
 		CardGameFrame.repaint();
 	}
 	//Creates a new CardIU object and ads it to P1CardPanel for every card in P1CardList
-	public void generateP1Cards(){
-		int cardSlotBound=0;
+	public void generateP1Cards(int index) {
+		int cardSlotBound = 0;
+		CardUIObject highLightCard = null;
 		P1CardPanel.removeAll();
-		for(Card e:P1CardList){
-			CardUIObject newCard = new CardUIObject(e,this);
+		for (int i = 0; i < P1CardList.size(); i++) {
+			Card e = P1CardList.get(i);
+			CardUIObject newCard = new CardUIObject(e, this);
+			//if index matches highlighted card store reference to highlighted card UI objected
+
+			if (i == index) {
+				highLightCard = newCard;
+			}
+
 			JPanel PlayerCardSlot = newCard.InitializeCard();
 			PlayerCardSlot.setBounds(cardSlotBound, 0, 150, 230);
 			P1CardPanel.add(PlayerCardSlot);
-			cardSlotBound+=150;
-			P1CardPanel.setPreferredSize(new Dimension(cardSlotBound,250));
+			cardSlotBound += 150;
+			P1CardPanel.setPreferredSize(new Dimension(cardSlotBound, 250));
+		}
+//		for(Card e:P1CardList){
+//			CardUIObject newCard = new CardUIObject(e,this);
+//			JPanel PlayerCardSlot = newCard.InitializeCard();
+//			PlayerCardSlot.setBounds(cardSlotBound, 0, 150, 230);
+//			P1CardPanel.add(PlayerCardSlot);
+//			cardSlotBound+=150;
+//			P1CardPanel.setPreferredSize(new Dimension(cardSlotBound,250));
+//		}
+		if (highLightCard != null) {
+			highLightCard.HighlightCard();
+
+//			try {
+//				Thread.sleep(1000);
+//			} catch (Exception e) {
+//
+//			}
+
+			//highLightCard.UnselectCard();
 		}
 		P1CardPanel.revalidate();
 		P1CardPanel.repaint();
 
 
+	}
+//		P1CardPanel.revalidate();
+//		P1CardPanel.repaint();
+
+
+
+
+
+	public void refreshHPPanels(int p1hp, int p2hp){
+		P1HP=p1hp;
+		P2HP=p2hp;
+		P1HPLabel.setText(p1hp+" / 100");
+		P2HPLabel.setText(p2hp+" / 100");
+		P1UIPanel.revalidate();
+		P1UIPanel.repaint();
+		P2UIPanel.revalidate();
+		P2UIPanel.repaint();
 	}
 
 

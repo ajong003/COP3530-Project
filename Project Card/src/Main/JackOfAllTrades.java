@@ -1,7 +1,7 @@
 package MAIN;
 
 
-import GUI.PlacementUIObject;
+import GUI.MainMenuUI;
 import GUI.User_Interface;
 
 import javax.swing.*;
@@ -19,16 +19,17 @@ public class JackOfAllTrades {
     //P2 cards
     public CardList<Card> p2Cards = new CardList<Card>();
 
-    public User_Interface UI;
+    public User_Interface GameUI;
 
     //empty playing lanes 1-3
     public Deck<Card> lane1 = new Deck<Card>(), lane2 = new Deck<Card>(), lane3 = new Deck<Card>();
 
     int p1HP=100, cpuHP=100;
-    
+
 
     //initialize everything
     public JackOfAllTrades() {
+
         //draw deck
         //generate deck
         drawDeck = generateDeck();
@@ -38,32 +39,34 @@ public class JackOfAllTrades {
 
 
         //Initialize GUI//
-        UI = new User_Interface();
-        UI.InitializeUI();
+        MainMenuUI MM = new MainMenuUI();
+        GameUI = new User_Interface();
+        MM.InitializeMainMenu(GameUI);
+        GameUI.InitializeUI(MM);
 
         //register draw deck and initialize counter
-        UI.DrawTable.setDeck(drawDeck);
-        UI.initializeDrawDeckCounter();
+        GameUI.DrawTable.setDeck(drawDeck);
+        GameUI.initializeDrawDeckCounter();
 
         //create the button and register it to the draw Deck
         DrawButton drawButton = new DrawButton();
 
-        UI.DrawTable.registerButton(drawButton);
+        GameUI.DrawTable.registerButton(drawButton);
 
         //Register lanes to GUI lane objects
-        UI.Lane1.registerlane(lane1);
-        UI.Lane2.registerlane(lane2);
-        UI.Lane3.registerlane(lane3);
+        GameUI.Lane1.registerlane(lane1);
+        GameUI.Lane2.registerlane(lane2);
+        GameUI.Lane3.registerlane(lane3);
         //register buttons
         PlaceButton placeButton = new PlaceButton();
-        UI.Lane1.registerButton(placeButton);
-        UI.Lane2.registerButton(placeButton);
-        UI.Lane3.registerButton(placeButton);
+        GameUI.Lane1.registerButton(placeButton);
+        GameUI.Lane2.registerButton(placeButton);
+        GameUI.Lane3.registerButton(placeButton);
 
         //
-        p1Cards.add(new Card("Hearts", 5, "sdfsdf"));
-        UI.setP1CardList(p1Cards);
-        UI.generateP1Cards();
+
+        GameUI.setP1CardList(p1Cards);
+        GameUI.generateP1Cards(-1);
 
         System.out.println(p1Cards);
 
@@ -76,19 +79,23 @@ public class JackOfAllTrades {
     //remove card UI object from player cards
     public class PlaceButton implements ActionListener {
         public void actionPerformed(ActionEvent Click) {
-            JButton sourceButton = (JButton) Click.getSource();
-            Card selectedCard = UI.P1SelectedCard.card;
-            switch(sourceButton.getName()){
-                case "Lane1":
-                    checkMatch(lane1,selectedCard);
-                    break;
-                case "Lane2":
-                    checkMatch(lane2,selectedCard);
-                    break;
-                case "Lane3":
-                    checkMatch(lane3,selectedCard);
-                    break;
+            if(GameUI.isCardSelected){
+                JButton sourceButton = (JButton) Click.getSource();
+                Card selectedCard = GameUI.P1SelectedCard.card;
+                switch(sourceButton.getName()){
+                    case "Lane1":
+                        checkMatch(lane1,selectedCard);
+
+                        break;
+                    case "Lane2":
+                        checkMatch(lane2,selectedCard);
+                        break;
+                    case "Lane3":
+                        checkMatch(lane3,selectedCard);
+                        break;
+                }
             }
+
 
         }
         //tests if lane matches card rank or suite, or is empty
@@ -96,13 +103,31 @@ public class JackOfAllTrades {
             if (lane.isEmpty()||(lane.peek().getRank()==selectedCard.getRank() || lane.peek().getSuite().equals(selectedCard.getSuite()))) {
                 //card linked to the selected card GUI object
                 p1Cards.remove(selectedCard);
-                UI.generateP1Cards();
+                GameUI.generateP1Cards(-1);
                 System.out.println("p1cards after placing");
                 System.out.println(p1Cards);
+                adjustHP(lane);
+                lane.push(GameUI.P1SelectedCard.card);
+                System.out.println("lane after adding");
+                System.out.println(lane);
+
+
+
                 return true;
 
             }
             return false;
+        }
+        public void adjustHP(Deck<Card> lane){
+            if(!lane.isEmpty()){
+                cpuHP = cpuHP - Math.abs((lane.peek().getRank() - GameUI.P1SelectedCard.card.getRank()));
+                System.out.println("minus" + Math.abs((lane.peek().getRank() - GameUI.P1SelectedCard.card.getRank())));
+                System.out.println(cpuHP);
+                GameUI.refreshHPPanels(p1HP,cpuHP);
+            }
+
+
+
         }
     }
 
@@ -112,9 +137,9 @@ public class JackOfAllTrades {
         public class DrawButton implements ActionListener {
 
             public void actionPerformed(ActionEvent Click) {
-                drawCard(p1Cards);
-                UI.generateP1Cards();
-                UI.refreshDrawDeckCounter();
+                int index=drawCard(p1Cards);
+                GameUI.generateP1Cards(index);
+                GameUI.refreshDrawDeckCounter();
                 System.out.println(p1Cards);
                 System.out.println(drawDeck);
 
@@ -123,27 +148,35 @@ public class JackOfAllTrades {
         //player draws card from drawDeck (activated by actionPerformed)
         //does returns false if drawDeck is empty
 
-        public boolean drawCard(CardList<Card> list) {
+        public int drawCard(CardList<Card> list) {
+            int index=-1;
             if (!drawDeck.isEmpty()) {
-                list.add(drawDeck.pop());
-                list.sort();
-                return true;
+                Card newCard=drawDeck.pop();
+                list.add(newCard);
+                list.suiteSort();
+                //find the index of the new card in sorted deck
+                index=list.indexOf(newCard);
+
             }
-            return false;
+            return index;
         }
 
         //create card deck double loop generates  sorted deck
         public static Deck<Card> generateDeck() {
             Deck<Card> fullDeck = new Deck<Card>();
-            String[] suiteArray = {"Hearts", "Clover", "Diamonds", "Spades"};
+            String[] suiteArray = {"Hearts", "Clubs", "Diamonds", "Spades"};
             for (int i = 0; i < suiteArray.length; i++) {
                 for (int k = 0; k < 13; k++) {
-                    fullDeck.push(new Card(suiteArray[i], k, "test"));
+                    fullDeck.push(new Card(suiteArray[i], k, "Normal card"));
 
                 }
 
 
             }
+            //Hardcore special card descriptions
+
+
+
             return fullDeck;
         }
 

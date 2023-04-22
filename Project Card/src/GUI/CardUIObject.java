@@ -27,7 +27,7 @@ public class CardUIObject {
 	public String CardName, basicValue;
 	public String Suite;
 	JButton SelectCard;
-	Border blackline, selectedLine;
+	Border blackline, selectedLine,highlightedLine;
 	public String Description;
 	public int cardValue, specialValue;
 
@@ -56,11 +56,12 @@ public class CardUIObject {
 		this.Description = card.getDescription();
 
 		//display Rank character (Q, K, 10, 9 etc)
-		if(card.getRank()<1 && card.getRank()>10){
-			this.basicValue = String.valueOf(card.toString().charAt(0));
-		}else{
-			this.basicValue = card.toString().substring(0,2);
-		}
+		this.basicValue=String.valueOf(card.toString().charAt(0));
+//		if(card.getRank()<1 && card.getRank()>10){
+//			this.basicValue = String.valueOf(card.toString().charAt(0));
+//		}else{
+//			this.basicValue = card.toString().substring(0,2);
+//		}
 
 	}
 
@@ -87,6 +88,7 @@ public class CardUIObject {
 
 		blackline = BorderFactory.createLineBorder(Color.black);
 		selectedLine = BorderFactory.createLineBorder(Color.orange);
+		highlightedLine = BorderFactory.createLineBorder(Color.green);
 		CardPanel.setBackground(Color.white);
 		SelectCard.setBackground(Color.white);
 
@@ -162,6 +164,11 @@ public class CardUIObject {
 
 
 		return(CardPanel);
+	}
+	public void HighlightCard(){
+		title = BorderFactory.createTitledBorder(highlightedLine, "" + CardName);
+		title.setTitleJustification(TitledBorder.CENTER);
+		SelectCard.setBorder(title);
 	}
 
 	public void SelectCard() {

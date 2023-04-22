@@ -153,14 +153,13 @@ public class PlacementUIObject {
 					UI.isCardSelected = false;
 
 					//add card to logical linked lane
-					lane.push(UI.P1SelectedCard.card);
-					System.out.println("lane after adding");
-					System.out.println(lane);
+
 				}
 
 			}
 			else {
 				//No Card Selected
+				System.out.println("No Card selected");
 			}
 
 

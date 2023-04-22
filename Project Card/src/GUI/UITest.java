@@ -9,7 +9,7 @@ public class UITest {
 		
 		User_Interface UI = new User_Interface();
 		
-		UI.InitializeUI();
+
 		
 	}
 }
