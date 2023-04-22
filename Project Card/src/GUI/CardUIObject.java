@@ -56,7 +56,12 @@ public class CardUIObject {
 		this.Description = card.getDescription();
 
 		//display Rank character (Q, K, 10, 9 etc)
-		this.basicValue=String.valueOf(card.toString().charAt(0));
+		if(card.getRank()==10){
+			this.basicValue ="10";
+		}else{
+			this.basicValue=String.valueOf(card.toString().charAt(0));
+		}
+
 //		if(card.getRank()<1 && card.getRank()>10){
 //			this.basicValue = String.valueOf(card.toString().charAt(0));
 //		}else{
