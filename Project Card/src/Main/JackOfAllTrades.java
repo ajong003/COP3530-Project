@@ -36,10 +36,13 @@ public class JackOfAllTrades {
         UI= new User_Interface();
         UI.InitializeUI();
 
-        //create the button and register it to the draw Deck
-        DrawButton drawButton = new DrawButton();
+        //register draw deck and initialize counter
         UI.DrawTable.setDeck(drawDeck);
         UI.initializeDrawDeckCounter();
+
+        //create the button and register it to the draw Deck
+        DrawButton drawButton = new DrawButton();
+
         UI.DrawTable.registerButton(drawButton);
 
         //Register lanes to GUI lane objects
@@ -88,9 +91,9 @@ public class JackOfAllTrades {
         public void actionPerformed(ActionEvent Click) {
            drawCard(p1Cards);
            UI.generateP1Cards();
-            UI.refreshDrawDeckCounter();
-            System.out.println(p1Cards);
-            System.out.println(drawDeck);
+           UI.refreshDrawDeckCounter();
+           System.out.println(p1Cards);
+           System.out.println(drawDeck);
 
         }
     }
@@ -100,6 +103,7 @@ public class JackOfAllTrades {
     public boolean drawCard(CardList<Card> list) {
         if(!drawDeck.isEmpty()){
             list.add(drawDeck.pop());
+            list.sort();
             return true;
         }
         return false;

@@ -241,7 +241,8 @@ public class User_Interface {
 		//P2 Add Cards
 			
 		P1CardPane.getViewport().add(P1CardPanel);
-		P1CardPanel.setPreferredSize(new Dimension(1500, 250));
+		P1CardPanel.setPreferredSize(new Dimension(150,250));
+
 		
 		P2CardPane.getViewport().add(P2CardPanel);
 		P2CardPanel.setPreferredSize(new Dimension(1200, 250));
@@ -296,6 +297,7 @@ public class User_Interface {
 			PlayerCardSlot.setBounds(cardSlotBound, 0, 150, 230);
 			P1CardPanel.add(PlayerCardSlot);
 			cardSlotBound+=150;
+			P1CardPanel.setPreferredSize(new Dimension(cardSlotBound,250));
 		}
 		P1CardPanel.revalidate();
 		P1CardPanel.repaint();
