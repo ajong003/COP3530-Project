@@ -77,38 +77,32 @@ public class JackOfAllTrades {
             Card selectedCard = UI.P1SelectedCard.card;
             switch(sourceButton.getName()){
                 case "Lane1":
-                    if (lane1.isEmpty()||(lane1.peek().getRank()==selectedCard.getRank() || lane1.peek().getSuite().equals(selectedCard.getSuite()))) {
-                        //card linked to the selected card GUI object
-                        p1Cards.remove(selectedCard);
-                        UI.generateP1Cards();
-                        System.out.println("p1cards after placing");
-                        System.out.println(p1Cards);
-
-                    }
+                    checkMatch(lane1,selectedCard);
                     break;
                 case "Lane2":
-                    if (lane2.isEmpty()||(lane2.peek().getRank()==selectedCard.getRank() || lane2.peek().getSuite().equals(selectedCard.getSuite()))) {
-                        //card linked to the selected card GUI object
-                        p1Cards.remove(selectedCard);
-                        UI.generateP1Cards();
-                        System.out.println("p1cards after placing");
-                        System.out.println(p1Cards);
-
-                    }
+                    checkMatch(lane2,selectedCard);
                     break;
                 case "Lane3":
-                    if (lane3.isEmpty()||(lane3.peek().getRank()==selectedCard.getRank() || lane3.peek().getSuite().equals(selectedCard.getSuite()))) {
-                        //card linked to the selected card GUI object
-                        p1Cards.remove(selectedCard);
-                        UI.generateP1Cards();
-                        System.out.println("p1cards after placing");
-                        System.out.println(p1Cards);
-
-                    }
+                    checkMatch(lane3,selectedCard);
                     break;
             }
 
-        }}
+        }
+        public boolean checkMatch(Deck<Card> lane,Card selectedCard){
+            if (lane.isEmpty()||(lane.peek().getRank()==selectedCard.getRank() || lane.peek().getSuite().equals(selectedCard.getSuite()))) {
+                //card linked to the selected card GUI object
+                p1Cards.remove(selectedCard);
+                UI.generateP1Cards();
+                System.out.println("p1cards after placing");
+                System.out.println(p1Cards);
+                return true;
+
+            }
+            return false;
+        }
+    }
+
+
 
         //call drawCard then refresh the P1cards GUI
         public class DrawButton implements ActionListener {
