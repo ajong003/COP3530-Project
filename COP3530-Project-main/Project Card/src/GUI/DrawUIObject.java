@@ -6,6 +6,7 @@ import Main.JackOfAllTrades;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -47,7 +48,7 @@ public class DrawUIObject {
 
 	    CardPanel.add(DrawCardButton, BorderLayout.CENTER);
 	    
-	    
+	    DrawCardButton.setFont(new Font("Serif",Font.BOLD,20));
 
 	    
 	    DrawCardButton.setBackground(Color.GRAY);

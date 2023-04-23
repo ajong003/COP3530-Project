@@ -1,22 +1,9 @@
 package GUI;
 
-import Main.Card;
-import Main.CardList;
-
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
-import GUI.CardUIObject.SelectCardListener;
 
 
 public class MainMenuUI {

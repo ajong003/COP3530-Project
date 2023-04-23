@@ -14,7 +14,7 @@ import javax.swing.border.TitledBorder;
 
 public class PlacementUIObject {
 
-	JButton PlaceCardBttn;
+	public JButton PlaceCardBttn;
 	JPanel CardPanel;
 	Border blackline;
 	TitledBorder title;
@@ -27,6 +27,12 @@ public class PlacementUIObject {
 	public String Suite;
 	public String Description;
 	public int cardValue, specialValue;
+	
+	
+	public static final String Spades  = "\u2660";
+	public static final String Hearts  = "\u2665";
+	public static final String Clubs  = "\u2663";
+	public static final String Diamonds  = "\u2666";
 
 	JLabel cardSuiteLabel, basicValueLabel, HiddenLabel, cardDescriptionLabel;
 
@@ -34,7 +40,7 @@ public class PlacementUIObject {
 	BorderLayout BorderLay = new BorderLayout();
 	GridLayout GridLay = new GridLayout();
 
-	Deck<Card> lane;
+	public Deck<Card> lane;
 
 
 	public PlacementUIObject(User_Interface UI) {
@@ -51,6 +57,7 @@ public class PlacementUIObject {
 		HiddenLabel = new JLabel("?");
 		cardDescriptionLabel = new JLabel("" + Description);
 		PlaceCardBttn = new JButton("Place");
+
 		CardPanel = new JPanel();
 
 		blackline = BorderFactory.createLineBorder(Color.black);
@@ -76,6 +83,15 @@ public class PlacementUIObject {
 		basicValueLabel.setVisible(false);
 		cardSuiteLabel.setVisible(false);
 
+		
+		//Font Changes
+		basicValueLabel.setFont(new Font("Serif",Font.BOLD,22));
+		cardSuiteLabel.setFont(new Font("Serif",Font.ITALIC + Font.BOLD,18));
+		cardDescriptionLabel.setFont(new Font("Serif",Font.ROMAN_BASELINE,15));
+		title.setTitleFont(new Font("Serif",Font.BOLD,15));
+		
+		PlaceCardBttn.setFont(new Font("Serif",Font.BOLD,20));
+		
 
 
 		PlaceCardBttn.addActionListener(DrawCardListen);
@@ -110,6 +126,7 @@ public class PlacementUIObject {
 		title = BorderFactory.createTitledBorder(blackline, "" + CardName);
 		title.setTitleJustification(TitledBorder.CENTER);
 		PlaceCardBttn.setBorder(title);
+		title.setTitleFont(new Font("Serif",Font.BOLD,15));
 
 		CardName = Card.CardName;
 		this.Suite = Card.Suite;
@@ -117,8 +134,7 @@ public class PlacementUIObject {
 		this.specialValue = Card.specialValue;
 		this.Description = Card.Description;
 		this.basicValue = Card.basicValue;
-
-		cardSuiteLabel.setText("" + Suite);
+		
 		basicValueLabel.setText("" + basicValue);
 		cardDescriptionLabel.setText("" + Description);
 
@@ -145,17 +161,20 @@ public class PlacementUIObject {
 		public void actionPerformed(ActionEvent Click) {
 
 			if (UI.isCardSelected == true) {
-				PlaceCard(UI.P1SelectedCard);
-				//UI.P1SelectedCard.ClearCard();
-				UI.isCardSelected = false;
 
-				//add card to logical linked lane
-				lane.push(UI.P1SelectedCard.card);
-				System.out.println("lane after adding");
-				System.out.println(lane);
+				if(lane.isEmpty()|| UI.P1SelectedCard.card.getRank()==lane.peek().getRank() || UI.P1SelectedCard.card.getSuite().equals(lane.peek().getSuite())){
+					PlaceCard(UI.P1SelectedCard);
+					//UI.P1SelectedCard.ClearCard();
+					UI.isCardSelected = false;
+
+					//add card to logical linked lane
+
+				}
+
 			}
 			else {
 				//No Card Selected
+				System.out.println("No Card selected");
 			}
 
 

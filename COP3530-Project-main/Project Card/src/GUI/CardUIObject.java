@@ -4,6 +4,7 @@ import Main.Card;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -15,7 +16,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -27,20 +30,29 @@ public class CardUIObject {
 	public String CardName, basicValue;
 	public String Suite;
 	JButton SelectCard;
-	Border blackline, selectedLine;
+	Border blackline, selectedLine,highlightedLine;
 	public String Description;
 	public int cardValue, specialValue;
+	
+	ImageIcon CardIconImg;
+	
+	public static final String Spades  = "\u2660";
+	public static final String Hearts  = "\u2665";
+	public static final String Clubs  = "\u2663";
+	public static final String Diamonds  = "\u2666";
 
 	CardUIObject self = this;
 	
 	JLabel cardSuiteLabel, basicValueLabel, HiddenLabel, cardDescriptionLabel;
+	JLabel CardIcon;
 	JButton ActivateCard;
-	JPanel CardPanel;
+	JPanel CardPanel, BottomPanel;
 
     TitledBorder title;
     
     BorderLayout BorderLay = new BorderLayout();
     GridLayout GridLay = new GridLayout();
+    FlowLayout FlowLay = new FlowLayout();
     
 	
 	//get values from actual card object
@@ -56,11 +68,34 @@ public class CardUIObject {
 		this.Description = card.getDescription();
 
 		//display Rank character (Q, K, 10, 9 etc)
-		if(card.getRank()<1 && card.getRank()>10){
-			this.basicValue = String.valueOf(card.toString().charAt(0));
+		if(card.getRank()==10){
+			this.basicValue ="10";
 		}else{
-			this.basicValue = card.toString().substring(0,2);
+			this.basicValue=String.valueOf(card.toString().charAt(0));
 		}
+		
+		if(card.getSuite() == "Spades") {
+			this.cardSuiteLabel = new JLabel(Suite + " " + Spades);
+		}
+		else if(card.getSuite() == "Hearts") {
+			this.cardSuiteLabel = new JLabel(Suite + " " + Hearts);
+		}
+		else if(card.getSuite() == "Diamonds") {
+			this.cardSuiteLabel = new JLabel(Suite + " " + Diamonds);
+		}
+		else if(card.getSuite() == "Clubs") {
+			this.cardSuiteLabel = new JLabel(Suite + " " + Clubs);
+		}
+		
+		
+		
+//		if(card.getRank()<1 && card.getRank()>10){
+//			this.basicValue = String.valueOf(card.toString().charAt(0));
+//		}else{
+//			this.basicValue = card.toString().substring(0,2);
+
+
+//		}
 
 	}
 
@@ -74,33 +109,54 @@ public class CardUIObject {
 //	}
 	public JPanel InitializeCard(){
 
-
+		
+		CardIcon = new JLabel(CardIconImg);
+		
 		SelectCardListener SelectCardListen = new SelectCardListener();
-		cardSuiteLabel = new JLabel("" + Suite);
+		
 		basicValueLabel = new JLabel("" + basicValue);
 
 		HiddenLabel = new JLabel("?");
 		cardDescriptionLabel = new JLabel("" + Description);
+		
 		SelectCard = new JButton("");
 		CardPanel = new JPanel();
+		BottomPanel = new JPanel();
 
 
 		blackline = BorderFactory.createLineBorder(Color.black);
 		selectedLine = BorderFactory.createLineBorder(Color.orange);
+		highlightedLine = BorderFactory.createLineBorder(Color.green);
 		CardPanel.setBackground(Color.white);
+		BottomPanel.setBackground(Color.white);
 		SelectCard.setBackground(Color.white);
+		
 
 
 
 		title = BorderFactory.createTitledBorder(blackline, "" + CardName);
 		title.setTitleJustification(TitledBorder.CENTER);
 
+		
+		//Font Changes
+		basicValueLabel.setFont(new Font("Serif",Font.BOLD,22));
+		cardSuiteLabel.setFont(new Font("Serif",Font.ITALIC + Font.BOLD,18));
+		cardDescriptionLabel.setFont(new Font("Serif",Font.ROMAN_BASELINE,15));
+		title.setTitleFont(new Font("Serif",Font.BOLD,15));
+		
+		cardSuiteLabel.setBounds(0, 0, 100, 100);
+		CardIcon.setBounds(100, 0, 100, 100);
+		
+		
+		
 		CardPanel.setLayout(GridLay);
 		CardPanel.add(SelectCard);
+		
+
 
 		SelectCard.setLayout(BorderLay);
 		SelectCard.setBorder(title);
-
+		
 		SelectCard.add(cardSuiteLabel, BorderLayout.SOUTH);
 		SelectCard.add(basicValueLabel, BorderLayout.NORTH);
 		SelectCard.add(HiddenLabel, BorderLayout.CENTER);
@@ -163,16 +219,24 @@ public class CardUIObject {
 
 		return(CardPanel);
 	}
+	public void HighlightCard(){
+		title = BorderFactory.createTitledBorder(highlightedLine, "" + CardName);
+		title.setTitleJustification(TitledBorder.CENTER);
+		title.setTitleFont(new Font("Serif",Font.BOLD,15));
+		SelectCard.setBorder(title);
+	}
 
 	public void SelectCard() {
 		title = BorderFactory.createTitledBorder(selectedLine, "" + CardName);
 		title.setTitleJustification(TitledBorder.CENTER);
+		title.setTitleFont(new Font("Serif",Font.BOLD,15));
 		SelectCard.setBorder(title);
 	}
 
 	public void UnselectCard() {
 		title = BorderFactory.createTitledBorder(blackline, "" + CardName);
 		title.setTitleJustification(TitledBorder.CENTER);
+		title.setTitleFont(new Font("Serif",Font.BOLD,15));
 		SelectCard.setBorder(title);
 	}
 	

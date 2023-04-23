@@ -3,25 +3,22 @@ package GUI;
 import Main.Card;
 import Main.CardList;
 
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
-import GUI.MainMenuUI.StartBttnListener;
+import javax.xml.datatype.Duration;
 
 
 public class User_Interface {
 
 	MainMenuUI MainMenu;
-	
-	ExitBttnListener ExitBttnListen = new ExitBttnListener();
-	
+
 	String PlayerName = "Player";
 	int CurrentCardSlots = 0;
 	JLabel PlayerNameLabel = new JLabel(PlayerName);
@@ -40,11 +37,20 @@ public class User_Interface {
 
 	public CardUIObject P1SelectedCard;
 
-	public boolean isCardSelected = false;
+	public boolean isCardSelected;
 
 	public PlacementUIObject Lane1, Lane2, Lane3;
 
 	JLabel  count;
+
+	public boolean laneMatch = false;
+
+	JPanel P2UIPanel;
+
+	JPanel P1UIPanel;
+
+	public int P1HP;
+	public int P2HP;
 
 
 
@@ -55,6 +61,7 @@ public class User_Interface {
 
 
 	public User_Interface(){
+
 	}
 
 	public void setP1CardList(CardList<Card> list){
@@ -62,10 +69,7 @@ public class User_Interface {
 	}
 	
 	public void InitializeUI(MainMenuUI MainMenu){
-
 		this.MainMenu = MainMenu;
-		
-		
 		
 		CardGameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -78,24 +82,48 @@ public class User_Interface {
 		ExitButton.setBounds(5, 655, 80, 20);
 		ExitButton.setFocusable(false);
 		
-		ExitButton.addActionListener(ExitBttnListen);
+		
+		//Font Changes
+		PlayerNameLabel.setFont(new Font("Serif",Font.BOLD,20));
+		HPLabel1.setFont(new Font("Serif",Font.BOLD,20));
+		P1HPLabel.setFont(new Font("Serif",Font.BOLD,20));
+		//Color
+		Color DarkRedP1 = new Color(180, 0, 50);
+		Color DarkRedP2 = new Color(180, 0, 150);
+		
+		PlayerNameLabel.setForeground(DarkRedP1);
+		HPLabel1.setForeground(DarkRedP1);
+		P1HPLabel.setForeground(DarkRedP1);
+		
+		Player2NameLabel.setFont(new Font("Serif",Font.BOLD,20));
+		HPLabel2.setFont(new Font("Serif",Font.BOLD,20));
+		P2HPLabel.setFont(new Font("Serif",Font.BOLD,20));
+		
+		Player2NameLabel.setForeground(DarkRedP2);
+		HPLabel2.setForeground(DarkRedP2);
+		P2HPLabel.setForeground(DarkRedP2);
 		
 		
 		
-		JPanel P1UIPanel = new JPanel();
+		P1UIPanel = new JPanel();
 			P1UIPanel.add(PlayerNameLabel);
 			P1UIPanel.add(HPLabel1);
 			P1UIPanel.add(P1HPLabel);
-		P1UIPanel.setBounds(1000, 340, 200, 20);
+		P1UIPanel.setBounds(1000, 340, 200, 50);
 			
 			
 		
-		JPanel P2UIPanel = new JPanel();
+		P2UIPanel = new JPanel();
 			P2UIPanel.add(Player2NameLabel);
 			P2UIPanel.add(HPLabel2);
 			P2UIPanel.add(P2HPLabel);
 		P2UIPanel.setBounds(1000, 140, 200, 50);
 
+		
+		
+		
+		
+		
 
 		//draw deck counter
 
@@ -169,18 +197,21 @@ public class User_Interface {
 		Lane1 = new PlacementUIObject(this);
 		JPanel Place1Panel = new JPanel();
 		Place1Panel = Lane1.InitializeCard();
+		Lane1.PlaceCardBttn.setName("Lane1");
 
 		Place1Panel.setBounds(450, 150, 150, 230);
 		
 		Lane2 = new PlacementUIObject(this);
 		JPanel Place2Panel = new JPanel();
 		Place2Panel = Lane2.InitializeCard();
+		Lane2.PlaceCardBttn.setName("Lane2");
 
 		Place2Panel.setBounds(610, 150, 150, 230);
 		
 		Lane3 = new PlacementUIObject(this);
 		JPanel Place3Panel = new JPanel();
 		Place3Panel = Lane3.InitializeCard();
+		Lane3.PlaceCardBttn.setName("Lane3");
 
 		Place3Panel.setBounds(770, 150, 150, 230);
 		//Place Objects
@@ -276,7 +307,7 @@ public class User_Interface {
 		CardGameFrame.getContentPane().add(Place3Panel);
 		
 		
-		// CardGameFrame.setVisible(true);
+		//CardGameFrame.setVisible(true);
 
 	}
 
@@ -285,6 +316,10 @@ public class User_Interface {
 		JPanel DrawCounter = new JPanel();
 		count = new JLabel(""+DrawTable.deck.size());
 		JLabel counter = new JLabel("Cards Left");
+		
+		count.setFont(new Font("Serif",Font.BOLD,15));
+		counter.setFont(new Font("Serif",Font.BOLD,15));
+		
 		DrawCounter.add(count);
 		DrawCounter.add(counter);
 		DrawCounter.setBounds(240, 300, 100, 40);
@@ -300,35 +335,66 @@ public class User_Interface {
 		CardGameFrame.repaint();
 	}
 	//Creates a new CardIU object and ads it to P1CardPanel for every card in P1CardList
-	public void generateP1Cards(){
-		int cardSlotBound=0;
+	public void generateP1Cards(int index) {
+		int cardSlotBound = 0;
+		CardUIObject highLightCard = null;
 		P1CardPanel.removeAll();
-		for(Card e:P1CardList){
-			CardUIObject newCard = new CardUIObject(e,this);
+		for (int i = 0; i < P1CardList.size(); i++) {
+			Card e = P1CardList.get(i);
+			CardUIObject newCard = new CardUIObject(e, this);
+			//if index matches highlighted card store reference to highlighted card UI objected
+
+			if (i == index) {
+				highLightCard = newCard;
+			}
+
 			JPanel PlayerCardSlot = newCard.InitializeCard();
 			PlayerCardSlot.setBounds(cardSlotBound, 0, 150, 230);
 			P1CardPanel.add(PlayerCardSlot);
-			cardSlotBound+=150;
-			P1CardPanel.setPreferredSize(new Dimension(cardSlotBound,250));
+			cardSlotBound += 150;
+			P1CardPanel.setPreferredSize(new Dimension(cardSlotBound, 250));
+		}
+//		for(Card e:P1CardList){
+//			CardUIObject newCard = new CardUIObject(e,this);
+//			JPanel PlayerCardSlot = newCard.InitializeCard();
+//			PlayerCardSlot.setBounds(cardSlotBound, 0, 150, 230);
+//			P1CardPanel.add(PlayerCardSlot);
+//			cardSlotBound+=150;
+//			P1CardPanel.setPreferredSize(new Dimension(cardSlotBound,250));
+//		}
+		if (highLightCard != null) {
+			highLightCard.HighlightCard();
+
+//			try {
+//				Thread.sleep(1000);
+//			} catch (Exception e) {
+//
+//			}
+
+			//highLightCard.UnselectCard();
 		}
 		P1CardPanel.revalidate();
 		P1CardPanel.repaint();
 
 
 	}
-	
-	public class ExitBttnListener implements ActionListener{
+//		P1CardPanel.revalidate();
+//		P1CardPanel.repaint();
 
-		public void actionPerformed(ActionEvent Click) {
-			System.out.println("Exiting to Main Menu");
-			
-			CardGameFrame.setVisible(false);
-			MainMenu.MainMenuFrame.setVisible(true);
 
-		}
 
+
+
+	public void refreshHPPanels(int p1hp, int p2hp){
+		P1HP=p1hp;
+		P2HP=p2hp;
+		P1HPLabel.setText(p1hp+" / 100");
+		P2HPLabel.setText(p2hp+" / 100");
+		P1UIPanel.revalidate();
+		P1UIPanel.repaint();
+		P2UIPanel.revalidate();
+		P2UIPanel.repaint();
 	}
-	
 
 
 	
