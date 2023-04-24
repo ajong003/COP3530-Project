@@ -74,10 +74,11 @@ public class User_Interface {
 	}
 
 	public void setP1CardList(CardList<Card> list){
-		P1CardList=list;
+		P1CardList = list;
 	}
+	
 	public void setCPUCardList(CardList<Card> list){
-		CPUCardList=list;
+		CPUCardList = list;
 	}
 	
 	public void InitializeUI(MainMenuUI MainMenu){
@@ -405,12 +406,15 @@ public class User_Interface {
 			CardUIObject newCard = new CardUIObject(e, this);
 			newCard.InitializeCard();
 			//JPanel PlayerCardSlot = newCard.InitializeCard();
-			JPanel PlayerCardSlot=newCard.HideCard();
+			JPanel PlayerCardSlot = newCard.HideCard();
 
 			PlayerCardSlot.setBounds(cardSlotBound, 0, 120, 117);
 			CPUCardPanel.add(PlayerCardSlot);
 			cardSlotBound += 120;
 			CPUCardPanel.setPreferredSize(new Dimension(cardSlotBound, 100));
+			
+			CPUCardPanel.revalidate();
+			CPUCardPanel.repaint();
 		}
 	}
 //		P1CardPanel.revalidate();

@@ -467,7 +467,13 @@ public class JackOfAllTrades {
                 if (!lane.P1NullifiedEffects) {
                     if (selectedCard.rank == 1) {
                         System.out.println("Destroy 2 Random Cards in the Opponents Hand.");
-                        //ToDo
+                        Random rnd = new Random();
+                        cpuCards.remove(rnd.nextInt(cpuCards.size()));
+                        cpuCards.remove(rnd.nextInt(cpuCards.size()));
+                        
+                        GameUI.generateCPUCards();
+                        System.out.println(cpuCards);
+                        
                     }
                     else if (selectedCard.rank == 11) {//FUNCTIONAL
                         System.out.println("The Next card played on this lane will deal x2 Damage.");
@@ -554,7 +560,7 @@ public class JackOfAllTrades {
             Damage = SelectedCard.getRank();
         }
 
-        Damage = Damage + lane.P1DmgModifier;
+        Damage = Damage + lane.P2DmgModifier;
 
         
         if (lane.ZeroDamageActive) {
@@ -583,7 +589,7 @@ public class JackOfAllTrades {
             p1HP = p1HP - Damage;
         }
 
-        System.out.println("Dealt " + Damage + " Damage");
+        System.out.println("CPU Dealt " + Damage + " Damage");
         System.out.println(cpuHP);
         GameUI.refreshHPPanels(p1HP,cpuHP);
     }
@@ -601,7 +607,6 @@ public class JackOfAllTrades {
                 switch(sourceButton.getName()){
                     case "Lane1":
                         placeCard(lane1,selectedCard);
-
                         break;
                     case "Lane2":
                         placeCard(lane2,selectedCard);
