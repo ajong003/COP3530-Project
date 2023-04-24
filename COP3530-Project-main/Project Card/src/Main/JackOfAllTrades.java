@@ -335,7 +335,7 @@ public class JackOfAllTrades {
 
             cpuHP = cpuHP + lane.P2HealPerCard;
 
-            adjustHP(lane);
+            adjustHPCPU(lane, selectedCard);
             lane.push(selectedCard);
             System.out.println("lane after adding");
             System.out.println(lane);
@@ -512,8 +512,14 @@ public class JackOfAllTrades {
 
         Damage = Damage + lane.P1DmgModifier;
 
+        
+        if (lane.ZeroDamageActive) {
+        	Damage = 0;
+        	lane.ZeroDamageActive = false;
+        }
+        
         if (lane.ZeroDamageALL) {
-            Damage = 0;
+        	lane.ZeroDamageActive = true;
             lane.ZeroDamageALL = false;
         }
 
@@ -536,9 +542,52 @@ public class JackOfAllTrades {
         System.out.println("Dealt " + Damage + " Damage");
         System.out.println(cpuHP);
         GameUI.refreshHPPanels(p1HP,cpuHP);
-
-
     }
+    public void adjustHPCPU(Deck<Card> lane, Card SelectedCard){
+        int Damage = 0;
+
+        //Calc Damage Difference
+        if(!lane.isEmpty()){
+            Damage = Math.abs((lane.peek().getRank() - SelectedCard.getRank()));
+        }
+        else {
+            Damage = SelectedCard.getRank();
+        }
+
+        Damage = Damage + lane.P1DmgModifier;
+
+        
+        if (lane.ZeroDamageActive) {
+        	Damage = 0;
+        	lane.ZeroDamageActive = false;
+        }
+        
+        if (lane.ZeroDamageALL) {
+        	lane.ZeroDamageActive = true;
+            lane.ZeroDamageALL = false;
+        }
+
+        if (lane.P2x2Damage) {
+            Damage = Damage * 2;
+            lane.P2x2Damage = false;
+        }
+        if (lane.x2DamageALL) {
+            Damage = Damage * 2;
+            lane.x2DamageALL = false;
+        }
+        //Is the damage Reflected?
+        if (lane.ReflectDmgP1) {
+            cpuHP = cpuHP - Damage;
+        }
+        else {
+            p1HP = p1HP - Damage;
+        }
+
+        System.out.println("Dealt " + Damage + " Damage");
+        System.out.println(cpuHP);
+        GameUI.refreshHPPanels(p1HP,cpuHP);
+    }
+    
 
     //function for placing card,
     //remove Card linked to p1selectedcard from UI object from p1cardlist

@@ -12,6 +12,7 @@ public class Deck<T extends Card> extends Stack<Card>{
 	public boolean P2NullifiedEffects = false;
 	
 	public boolean ZeroDamageALL = false;
+	public boolean ZeroDamageActive = false;
 	
 	public boolean P1NextTurnAddActionOrigin = false;
 	public boolean P2NextTurnAddActionOrigin = false;
