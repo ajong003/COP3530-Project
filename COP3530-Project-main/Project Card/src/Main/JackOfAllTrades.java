@@ -109,6 +109,7 @@ public class JackOfAllTrades {
         int random = rnd.nextInt(0,6);
 
         while(CPUActionsLeft>0){
+            System.out.println("CPU ACTIOSN LEFT" + CPUActionsLeft);
             System.out.println("CPU CARDS");
             System.out.println(cpuCards);
             ArrayList<Card> playableCardsLane1=new ArrayList<Card>();
@@ -184,6 +185,7 @@ public class JackOfAllTrades {
                     System.out.println("RANDOM CPU DRAW");
                     cpuDraw();
                 }else{
+                    System.out.println("PLACECARDCPU");
                     placeCardCPU(maxDamageLane,maxDamageCard);
                 }
 
@@ -352,6 +354,7 @@ public class JackOfAllTrades {
             return true;
 
         }
+        CPUActionsLeft--;
         return false;
     }
     public boolean placeCard(Deck<Card> lane, Card selectedCard){
