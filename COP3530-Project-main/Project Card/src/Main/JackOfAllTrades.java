@@ -95,7 +95,6 @@ public class JackOfAllTrades {
         System.out.println(p1Cards);
 
 
-
     }
 
 
@@ -106,7 +105,7 @@ public class JackOfAllTrades {
         //generate array of all possible cards to be played
         System.out.println("CPUTURN");
         Random rnd = new Random();
-        int random = rnd.nextInt(0,6);
+        int random = rnd.nextInt(6);
 
         while(CPUActionsLeft>0){
             System.out.println("CPU ACTIOSN LEFT" + CPUActionsLeft);
@@ -547,6 +546,13 @@ public class JackOfAllTrades {
         else {
             cpuHP = cpuHP - Damage;
         }
+        
+        if(cpuHP < 0) {
+        	GameUI.PlayerWon();
+        }
+        else if (p1HP <= 0) {
+        	GameUI.PlayerLost();
+        }
 
         System.out.println("Dealt " + Damage + " Damage");
         System.out.println(cpuHP);
@@ -592,6 +598,13 @@ public class JackOfAllTrades {
         }
         else {
             p1HP = p1HP - Damage;
+        }
+        
+        if(cpuHP < 0) {
+        	GameUI.PlayerWon();
+        }
+        else if (p1HP <= 0) {
+        	GameUI.PlayerLost();
         }
 
         System.out.println("Dealt " + Damage + " Damage");

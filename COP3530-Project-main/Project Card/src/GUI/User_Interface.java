@@ -28,6 +28,9 @@ public class User_Interface {
 	JLabel HPLabel2 = new JLabel("HP:");
 	JLabel P1HPLabel = new JLabel("100 / 100");
 	JLabel P2HPLabel = new JLabel("100 / 100");
+	JLabel uLost = new JLabel("You Lost");
+	JLabel uWin = new JLabel("You Win!");
+	
 	JButton ExitButton = new JButton("Exit");
 	JFrame CardGameFrame = new JFrame();
 	JPanel P1CardPanel = new JPanel();
@@ -416,8 +419,65 @@ public class User_Interface {
 //		P1CardPanel.revalidate();
 //		P1CardPanel.repaint();
 
-
-
+	public void PlayerLost(){
+		CardGameFrame.setVisible(false);
+		JFrame PlayerLost = new JFrame();
+		
+		JPanel Lost = new JPanel();
+		
+		PlayerLost.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		PlayerLost.setLayout(null);
+		
+		PlayerLost.setTitle("Jack of All Trades");
+		
+		PlayerLost.setSize(1280,720);
+		
+		Lost.setBounds(445, 200, 400, 400);
+		uLost.setFont(new Font("Serif",Font.BOLD,80));
+		Color DarkRed = new Color(180, 0, 50);
+		
+		uLost.setForeground(DarkRed);
+		PlayerLost.setLayout(null);
+		
+		
+		Lost.add(uLost);
+		
+		PlayerLost.getContentPane().add(Lost);
+		
+		PlayerLost.setVisible(true);
+		
+	}
+	public void PlayerWon(){
+		CardGameFrame.setVisible(false);
+		JFrame PlayerWon = new JFrame();
+		
+		JPanel Won = new JPanel();
+		
+		PlayerWon.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		PlayerWon.setLayout(null);
+		
+		PlayerWon.setTitle("Jack of All Trades");
+		
+		PlayerWon.setSize(1280,720);
+		
+		Won.setBounds(445, 200, 400, 400);
+		uWin.setFont(new Font("Serif",Font.BOLD,80));
+		Color DarkGreen = new Color(0, 180, 50);
+		
+		uWin.setForeground(DarkGreen);
+		
+		PlayerWon.setLayout(null);
+		
+		
+		Won.add(uWin);
+		
+		PlayerWon.getContentPane().add(Won);
+		
+		PlayerWon.setVisible(true);
+		
+	}
 
 
 	public void refreshHPPanels(int p1hp, int p2hp){
