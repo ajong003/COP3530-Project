@@ -12,7 +12,7 @@ Overall, code may be messy because we ran into unexpected time constraints due t
 We had hoped to be able to incorporate more advanced data structures and/or algorithms, but in the end we decided to allocate more effort into getting the main functions to work.
 
 Contributions:\
-Luis Gomez:  GUI, Menu, Buttons, and Visual implementation, Card Effects, bug fixing
+Luis Gomez:  GUI, Menu, Buttons, and Visual implementation, Card Effects, bug fixing\
 Alex Jong A Kiem: Card and deck structure and methods, CPU, Tweaking and linking GUI with card objects,  bug fixing
 
 
