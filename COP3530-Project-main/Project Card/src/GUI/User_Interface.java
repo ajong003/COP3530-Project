@@ -6,12 +6,16 @@ import Main.CardList;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
+import GUI.MainMenuUI.BackBttnListener;
 
 
 public class User_Interface {
@@ -42,6 +46,8 @@ public class User_Interface {
 
 	public PlacementUIObject Lane1, Lane2, Lane3;
 
+	ExitBttnListener ExitBttnListen = new ExitBttnListener();
+	
 	JLabel  count;
 
 	public boolean laneMatch = false;
@@ -87,6 +93,7 @@ public class User_Interface {
 		
 		ExitButton.setBounds(5, 655, 80, 20);
 		ExitButton.setFocusable(false);
+		ExitButton.addActionListener(ExitBttnListen);
 		
 		
 		//Font Changes
@@ -410,6 +417,15 @@ public class User_Interface {
 //		P1CardPanel.repaint();
 
 
+	public class ExitBttnListener implements ActionListener{
+		
+		public void actionPerformed(ActionEvent Click) {
+			System.out.println("Exit Button Pressed");
+			CardGameFrame.setVisible(false);
+			MainMenu.MainMenuFrame.setVisible(true);
+			
+		}
+	}
 
 
 
