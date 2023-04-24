@@ -91,25 +91,17 @@ public class JackOfAllTrades {
 
         System.out.println(p1Cards);
 
-        cpuDraw();
-        cpuDraw();
 
 
     }
 
-    public void playerTurn(){
-        while(P1ActionsLeft>0){
-
-        }
 
 
-    }
 
-    public void takeTurns(){
-        
-    }
+
     public void cpuTurn(){
         //generate array of all possible cards to be played
+        System.out.println("CPUTURN");
         while(CPUActionsLeft>0){
             ArrayList<Card> playableCardsLane1=new ArrayList<Card>();
             ArrayList<Card> playableCardsLane2=new ArrayList<Card>();
@@ -120,9 +112,10 @@ public class JackOfAllTrades {
             for(Card card:cpuCards){
                 for(int i=0;i<laneArray.length;i++){
                     Deck<Card> lane=laneArray[i];
-                    if((lane.peek().getRank() == card.getRank() || lane.peek().getSuite().equals(card.getSuite()) || card.getRank()==1)){
+                    if(lane.isEmpty() || (lane.peek().getRank() == card.getRank() || lane.peek().getSuite().equals(card.getSuite()) || card.getRank()==1)){
 
                         playableCardsArray[i].add(card);
+                        System.out.println("ADDING TO PLAYABLE CARDS");
                     }
                 }
 
@@ -179,6 +172,7 @@ public class JackOfAllTrades {
             if(maxDamageCard!=null){
                 Random rnd = new Random();
                 if(rnd.nextInt(0,4)==0){
+                    System.out.println("RANDOM CPU DRAW");
                     cpuDraw();
                 }else{
                     placeCardCPU(maxDamageLane,maxDamageCard);
@@ -186,6 +180,7 @@ public class JackOfAllTrades {
 
 
             }else{
+                System.out.println("MAX DAMAGE CARD IS NULL");
                 cpuDraw();
 
             }
@@ -561,6 +556,11 @@ public class JackOfAllTrades {
                         placeCard(lane3,selectedCard);
                         break;
                 }
+                if(P1ActionsLeft==0){
+                    cpuTurn();
+                    CPUActionsLeft=1;
+                    P1ActionsLeft=1;
+                }
             }
 
 
@@ -576,11 +576,18 @@ public class JackOfAllTrades {
         public class DrawButton implements ActionListener {
 
             public void actionPerformed(ActionEvent Click) {
+                P1ActionsLeft--;
+                System.out.println("p1actionsleft = " + P1ActionsLeft);
                 int index=drawCard(p1Cards);
                 GameUI.generateP1Cards(index);
                 GameUI.refreshDrawDeckCounter();
                 System.out.println(p1Cards);
                 System.out.println(drawDeck);
+                if(P1ActionsLeft==0){
+                    cpuTurn();
+                    CPUActionsLeft=1;
+                    P1ActionsLeft=1;
+                }
 
             }
         }
@@ -588,6 +595,7 @@ public class JackOfAllTrades {
         //does returns false if drawDeck is empty
 
         public int drawCard(CardList<Card> list) {
+
             int index=-1;
             if (!drawDeck.isEmpty()) {
                 Card newCard=drawDeck.pop();
