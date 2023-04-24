@@ -3,6 +3,8 @@
 Students: Luis Gomez, Alex Jong A Kiem\
 A card game with a GUI
 
+https://github.com/ajong003/COP3530-Project
+
 Notes:\
 CPU is buggy and primitive, only looks one step ahead(max damage)\
 Scoreboard and Options not functional.\
