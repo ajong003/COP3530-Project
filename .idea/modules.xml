@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/COP3530-Project.iml" filepath="$PROJECT_DIR$/COP3530-Project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/COP3530-Project-main/COP3530-Project-main.iml" filepath="$PROJECT_DIR$/COP3530-Project-main/COP3530-Project-main.iml" />
     </modules>
   </component>
 </project>

@@ -1,5 +1,7 @@
 package Main;
 
+import GUI.PlacementUIObject;
+
 import java.util.Collections;
 import java.util.Stack;
 
@@ -12,6 +14,7 @@ public class Deck<T extends Card> extends Stack<Card>{
 	public boolean P2NullifiedEffects = false;
 	
 	public boolean ZeroDamageALL = false;
+    public boolean ZeroDamageActive = false;
 	
 	public boolean P1NextTurnAddActionOrigin = false;
 	public boolean P2NextTurnAddActionOrigin = false;
@@ -30,11 +33,16 @@ public class Deck<T extends Card> extends Stack<Card>{
 	public int P2HealPerCard = 0;
 	public int P1DmgModifier = 0;
 	public int P2DmgModifier = 0;
+
+    PlacementUIObject uiLane;
 	
 	
 
     public Deck(){
 
+    }
+    public void registerUIObject(PlacementUIObject object){
+        this.uiLane=object;
     }
 
 

@@ -76,6 +76,9 @@ public class JackOfAllTrades {
         GameUI.Lane1.registerlane(lane1);
         GameUI.Lane2.registerlane(lane2);
         GameUI.Lane3.registerlane(lane3);
+        lane1.registerUIObject(GameUI.Lane1);
+        lane2.registerUIObject(GameUI.Lane2);
+        lane3.registerUIObject(GameUI.Lane3);
         //register buttons
         PlaceButton placeButton = new PlaceButton();
         GameUI.Lane1.registerButton(placeButton);
@@ -102,7 +105,12 @@ public class JackOfAllTrades {
     public void cpuTurn(){
         //generate array of all possible cards to be played
         System.out.println("CPUTURN");
+        Random rnd = new Random();
+        int random = rnd.nextInt(0,6);
+
         while(CPUActionsLeft>0){
+            System.out.println("CPU CARDS");
+            System.out.println(cpuCards);
             ArrayList<Card> playableCardsLane1=new ArrayList<Card>();
             ArrayList<Card> playableCardsLane2=new ArrayList<Card>();
             ArrayList<Card> playableCardsLane3=new ArrayList<Card>();
@@ -170,8 +178,9 @@ public class JackOfAllTrades {
 
             //play max damage card or draw 1/3 chance
             if(maxDamageCard!=null){
-                Random rnd = new Random();
-                if(rnd.nextInt(0,4)==0){
+
+                System.out.println("RANDOM NUMBER" + random);
+                if(random==0){
                     System.out.println("RANDOM CPU DRAW");
                     cpuDraw();
                 }else{
@@ -330,10 +339,13 @@ public class JackOfAllTrades {
 
             cpuHP = cpuHP + lane.P2HealPerCard;
 
-            adjustHP(lane);
+            adjustHPCPU(lane, selectedCard);
             lane.push(selectedCard);
             System.out.println("lane after adding");
             System.out.println(lane);
+            lane.uiLane.PlaceCard(selectedCard.cardUIObject);
+            GameUI.generateCPUCards();
+
 
 
 
@@ -507,6 +519,11 @@ public class JackOfAllTrades {
 
         Damage = Damage + lane.P1DmgModifier;
 
+        if (lane.ZeroDamageActive) {
+            Damage = 0;
+            lane.ZeroDamageActive = false;
+        }
+
         if (lane.ZeroDamageALL) {
             Damage = 0;
             lane.ZeroDamageALL = false;
@@ -533,6 +550,50 @@ public class JackOfAllTrades {
         GameUI.refreshHPPanels(p1HP,cpuHP);
 
 
+    }
+    public void adjustHPCPU(Deck<Card> lane, Card SelectedCard){
+        int Damage = 0;
+
+        //Calc Damage Difference
+        if(!lane.isEmpty()){
+            Damage = Math.abs((lane.peek().getRank() - SelectedCard.getRank()));
+        }
+        else {
+            Damage = SelectedCard.getRank();
+        }
+
+        Damage = Damage + lane.P1DmgModifier;
+
+
+        if (lane.ZeroDamageActive) {
+            Damage = 0;
+            lane.ZeroDamageActive = false;
+        }
+
+        if (lane.ZeroDamageALL) {
+            lane.ZeroDamageActive = true;
+            lane.ZeroDamageALL = false;
+        }
+
+        if (lane.P2x2Damage) {
+            Damage = Damage * 2;
+            lane.P2x2Damage = false;
+        }
+        if (lane.x2DamageALL) {
+            Damage = Damage * 2;
+            lane.x2DamageALL = false;
+        }
+        //Is the damage Reflected?
+        if (lane.ReflectDmgP1) {
+            cpuHP = cpuHP - Damage;
+        }
+        else {
+            p1HP = p1HP - Damage;
+        }
+
+        System.out.println("Dealt " + Damage + " Damage");
+        System.out.println(cpuHP);
+        GameUI.refreshHPPanels(p1HP,cpuHP);
     }
 
     //function for placing card,

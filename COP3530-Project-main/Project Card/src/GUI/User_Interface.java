@@ -6,6 +6,8 @@ import Main.CardList;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -41,6 +43,8 @@ public class User_Interface {
 	public boolean isCardSelected;
 
 	public PlacementUIObject Lane1, Lane2, Lane3;
+
+	ExitBttnListener ExitBttnListen = new ExitBttnListener();
 
 	JLabel  count;
 
@@ -87,6 +91,7 @@ public class User_Interface {
 		
 		ExitButton.setBounds(5, 655, 80, 20);
 		ExitButton.setFocusable(false);
+		ExitButton.addActionListener(ExitBttnListen);
 		
 		
 		//Font Changes
@@ -125,9 +130,9 @@ public class User_Interface {
 			P2UIPanel.add(P2HPLabel);
 		P2UIPanel.setBounds(1000, 140, 200, 50);
 
-		
-		
-		
+
+
+
 		
 		
 
@@ -396,7 +401,9 @@ public class User_Interface {
 		for (int i = 0; i < CPUCardList.size(); i++) {
 			Card e = CPUCardList.get(i);
 			CardUIObject newCard = new CardUIObject(e, this);
+
 			newCard.InitializeCard();
+			e.registerCardUIObject(newCard);
 			//JPanel PlayerCardSlot = newCard.InitializeCard();
 			JPanel PlayerCardSlot=newCard.HideCard();
 
@@ -423,6 +430,16 @@ public class User_Interface {
 		P2UIPanel.revalidate();
 		P2UIPanel.repaint();
 	}
+	public class ExitBttnListener implements ActionListener {
+
+		public void actionPerformed(ActionEvent Click) {
+			System.out.println("Exit Button Pressed");
+			CardGameFrame.setVisible(false);
+			MainMenu.MainMenuFrame.setVisible(true);
+
+		}
+	}
+
 
 
 	
