@@ -7,6 +7,8 @@ import GUI.User_Interface;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class JackOfAllTrades {
 
@@ -34,7 +36,7 @@ public class JackOfAllTrades {
 	boolean P1NextTurnRedAction = false;
 	boolean P2NextTurnRedAction = false;
     
-    int P1ActionsLeft = 1, P2ActionsLeft = 0;
+    int P1ActionsLeft = 1, CPUActionsLeft = 1;
     public boolean drawLock;
     public boolean placeLock;
     public int drawCounter;
@@ -96,18 +98,446 @@ public class JackOfAllTrades {
     }
 
     public void playerTurn(){
-        drawCounter=0;
-        placeLock=false;
-        drawLock=false;
+        while(P1ActionsLeft>0){
+
+        }
+
 
     }
+
+    public void takeTurns(){
+        
+    }
     public void cpuTurn(){
+        //generate array of all possible cards to be played
+        while(CPUActionsLeft>0){
+            ArrayList<Card> playableCardsLane1=new ArrayList<Card>();
+            ArrayList<Card> playableCardsLane2=new ArrayList<Card>();
+            ArrayList<Card> playableCardsLane3=new ArrayList<Card>();
+            //needs to be typecasted
+            ArrayList[] playableCardsArray= {playableCardsLane1,playableCardsLane2,playableCardsLane3};
+            Deck[] laneArray= {lane1, lane2, lane3};
+            for(Card card:cpuCards){
+                for(int i=0;i<laneArray.length;i++){
+                    Deck<Card> lane=laneArray[i];
+                    if((lane.peek().getRank() == card.getRank() || lane.peek().getSuite().equals(card.getSuite()) || card.getRank()==1)){
+
+                        playableCardsArray[i].add(card);
+                    }
+                }
+
+            }
+            //calculate max damage
+            int maxDamage =0;
+            Card maxDamageCard=null;
+            Deck<Card> maxDamageLane=null;
+            for(int k=0;k<playableCardsArray.length;k++){
+                ArrayList<Card> cardArray = playableCardsArray[k];
+                Deck<Card> lane = laneArray[k];
+                for(Card card:cardArray){
+                    int Damage = 0;
+
+                    //Calc Damage Difference
+                    if(!lane.isEmpty()){
+                        Damage = Math.abs((lane.peek().getRank() - card.getRank()));
+                    }
+                    else {
+                        Damage = card.getRank();
+                    }
+
+                    Damage = Damage + lane.P2DmgModifier;
+
+                    if (lane.ZeroDamageALL) {
+                        Damage = 0;
+
+                    }
+
+                    if (lane.P2x2Damage) {
+                        Damage = Damage * 2;
+
+                    }
+                    if (lane.x2DamageALL) {
+                        Damage = Damage * 2;
+
+                    }
+                    //Is the damage Reflected?
+                    if (lane.ReflectDmgP1) {
+                        Damage = Damage - (2*Damage);
+                    }
+
+                    if(Damage>maxDamage){
+                        maxDamage=Damage;
+                        maxDamageCard=card;
+                        maxDamageLane=lane;
+                    }
+                }
+
+
+            }
+
+            //play max damage card or draw 1/3 chance
+            if(maxDamageCard!=null){
+                Random rnd = new Random();
+                if(rnd.nextInt(0,4)==0){
+                    cpuDraw();
+                }else{
+                    placeCardCPU(maxDamageLane,maxDamageCard);
+                }
+
+
+            }else{
+                cpuDraw();
+
+            }
+        }
 
     }
     public void cpuDraw(){
         drawCard(cpuCards);
+        CPUActionsLeft--;
         GameUI.refreshDrawDeckCounter();
         GameUI.generateCPUCards();
+    }
+    public boolean placeCardCPU(Deck<Card> lane, Card selectedCard){
+        if (lane.isEmpty()||(lane.peek().getRank()==selectedCard.getRank() || lane.peek().getSuite().equals(selectedCard.getSuite()))||selectedCard.getRank()==11) {
+            //card linked to the selected card GUI object
+
+            CPUActionsLeft--;
+
+            if (!P2NextCardNotLost) {
+                cpuCards.remove(selectedCard);
+                GameUI.generateCPUCards();
+            }
+            else {
+                P2NextCardNotLost = false;
+            }
+            //Activate Effects
+            if (selectedCard.suite == "Spades") {
+                if (selectedCard.rank == 1) { //FUNCTIONAL
+                    System.out.println("Nullify All Active Effects in the lane and gain +1 Action");
+                    lane.P1DmgModifier = 0;
+                    lane.P2DmgModifier = 0;
+
+                    lane.P1NullifiedEffects = false;
+                    lane.P2NullifiedEffects = false;
+
+                    lane.P1HealPerCard = 0;
+                    lane.P2HealPerCard = 0;
+                    lane.ReflectDmgP1 = false;
+                    lane.ReflectDmgP2 = false;
+                    lane.ZeroDamageALL = false;
+                    lane.x2DamageALL = false;
+
+                    if (lane.P1NextTurnAddActionOrigin) {
+                        P2NextTurnAddAction = false;
+                    }
+                    if (lane.P2NextTurnAddActionOrigin) {
+                        P1NextTurnAddAction = false;
+                    }
+                    if (lane.P1NextTurnRedActionOrigin) {
+                        P2NextTurnRedAction = false;
+                    }
+                    if (lane.P2NextTurnRedActionOrigin) {
+                        P1NextTurnRedAction = false;
+                    }
+
+
+                    CPUActionsLeft++;
+                }
+                else if (selectedCard.rank == 11) {
+                    if (!lane.P2NullifiedEffects) {
+                        System.out.println("Reveal 2 Random Cards of the Opponent");
+                        //ToDo
+                    }
+                }
+                else if (selectedCard.rank == 12) {
+                    if (!lane.P2NullifiedEffects) {//FUNCTIONAL
+                        System.out.println("Opponent Loses one action next turn");
+                        P1ActionsLeft--;
+                    }
+
+                }
+                else if (selectedCard.rank == 13) {
+                    if (!lane.P2NullifiedEffects) {
+                        System.out.println("All Future Cards Placed here, by the Opponent, will have their Effects Nullified.");
+                        lane.P1NullifiedEffects = true;
+                    }
+
+                }
+            }
+
+            else if(selectedCard.suite == "Diamonds") {
+                if (!lane.P2NullifiedEffects) {
+                    if (selectedCard.rank == 1) {
+                        System.out.println("The next attack against the user, in this lane, is reflected");
+                        lane.ReflectDmgP2 = true;
+                    }
+                    else if (selectedCard.rank == 11) {//FUNCTIONAL
+                        System.out.println("Next card played on this lane deals Zero Damage");
+                        lane.ZeroDamageALL = true;
+                    }
+                    else if (selectedCard.rank == 12) {
+                        System.out.println("The User gains +2 actions next turn");
+                        lane.P2NextTurnAddActionOrigin = true;
+                    }
+                    else if (selectedCard.rank == 13) {
+                        System.out.println("All Future Cards Placed in this Lane, by the Opponent, will deal -3 Damage.");
+                        lane.P1DmgModifier = lane.P2DmgModifier - 3;
+                    }
+                }
+            }
+
+            else if(selectedCard.suite == "Hearts") {//FUNCTIONAL COMPLETE
+                if (!lane.P2NullifiedEffects) {
+                    if (selectedCard.rank == 1) {//FUNCTIONAL
+                        System.out.println("Dont Lose next Card, Gain +1 Action");
+                        P2NextCardNotLost = true;
+                        CPUActionsLeft++;
+                    }
+                    else if (selectedCard.rank == 11) {//FUNCTIONAL
+                        System.out.println("Regain HP equal to the last card on the Lane.");
+                        if (!lane.isEmpty()) {
+                            cpuHP = cpuHP + lane.peek().getRank();
+                        }
+                    }
+                    else if (selectedCard.rank == 12) {//FUNCTIONAL
+                        System.out.println("Heal the user by 12 HP");
+                        cpuHP = cpuHP + 12;
+                    }
+                    else if (selectedCard.rank == 13) {//FUNCTIONAL
+                        System.out.println("All Future Cards Placed here, by the User, will heal +2 HP.");
+                        lane.P2HealPerCard = lane.P2HealPerCard + 2;
+                    }
+                }
+            }//FUNCTIONAL COMPLETE
+
+            else if(selectedCard.suite == "Clubs") {
+                if (!lane.P2NullifiedEffects) {
+                    if (selectedCard.rank == 1) {
+                        System.out.println("Destroy 2 Random Cards in the Opponents Hand.");
+                        //ToDo
+                    }
+                    else if (selectedCard.rank == 11) {//FUNCTIONAL
+                        System.out.println("The Next card played on this lane will deal x2 Damage.");
+                        lane.x2DamageALL = true;
+                    }
+                    else if (selectedCard.rank == 12) {//FUNCTIONAL
+                        System.out.println("This card will deal x2 Damage");
+                        lane.P2x2Damage = true;
+                    }
+                    else if (selectedCard.rank == 13) {//FUNCTIONAL
+                        System.out.println("All Future Cards Placed in this Lane, by the User, will deal +3 Damage.");
+                        lane.P2DmgModifier = lane.P2DmgModifier + 3;
+                    }
+                }
+            }
+
+
+            cpuHP = cpuHP + lane.P2HealPerCard;
+
+            adjustHP(lane);
+            lane.push(selectedCard);
+            System.out.println("lane after adding");
+            System.out.println(lane);
+
+
+
+            return true;
+
+        }
+        return false;
+    }
+    public boolean placeCard(Deck<Card> lane, Card selectedCard){
+        if (lane.isEmpty()||(lane.peek().getRank()==selectedCard.getRank() || lane.peek().getSuite().equals(selectedCard.getSuite()))||selectedCard.getRank()==11) {
+            //card linked to the selected card GUI object
+
+            P1ActionsLeft--;
+
+            if (!P1NextCardNotLost) {
+                p1Cards.remove(selectedCard);
+                GameUI.generateP1Cards(-1);
+            }
+            else {
+                P1NextCardNotLost = false;
+            }
+            System.out.println("p1cards after placing");
+            System.out.println(p1Cards);
+
+            //Activate Effects
+            if (selectedCard.suite == "Spades") {
+                if (selectedCard.rank == 1) { //FUNCTIONAL
+                    System.out.println("Nullify All Active Effects in the lane and gain +1 Action");
+                    lane.P1DmgModifier = 0;
+                    lane.P2DmgModifier = 0;
+
+                    lane.P1NullifiedEffects = false;
+                    lane.P2NullifiedEffects = false;
+
+                    lane.P1HealPerCard = 0;
+                    lane.P2HealPerCard = 0;
+                    lane.ReflectDmgP1 = false;
+                    lane.ReflectDmgP2 = false;
+                    lane.ZeroDamageALL = false;
+                    lane.x2DamageALL = false;
+
+                    if (lane.P1NextTurnAddActionOrigin) {
+                        P1NextTurnAddAction = false;
+                    }
+                    if (lane.P2NextTurnAddActionOrigin) {
+                        P2NextTurnAddAction = false;
+                    }
+                    if (lane.P1NextTurnRedActionOrigin) {
+                        P1NextTurnRedAction = false;
+                    }
+                    if (lane.P2NextTurnRedActionOrigin) {
+                        P2NextTurnRedAction = false;
+                    }
+
+
+                    P1ActionsLeft++;
+                }
+                else if (selectedCard.rank == 11) {
+                    if (!lane.P1NullifiedEffects) {
+                        System.out.println("Reveal 2 Random Cards of the Opponent");
+                        //ToDo
+                    }
+                }
+                else if (selectedCard.rank == 12) {
+                    if (!lane.P1NullifiedEffects) {//FUNCTIONAL
+                        System.out.println("Opponent Loses one action next turn");
+                        CPUActionsLeft--;
+                    }
+
+                }
+                else if (selectedCard.rank == 13) {
+                    if (!lane.P1NullifiedEffects) {
+                        System.out.println("All Future Cards Placed here, by the Opponent, will have their Effects Nullified.");
+                        lane.P2NullifiedEffects = true;
+                    }
+
+                }
+            }
+
+            else if(selectedCard.suite == "Diamonds") {
+                if (!lane.P1NullifiedEffects) {
+                    if (selectedCard.rank == 1) {
+                        System.out.println("The next attack against the user, in this lane, is reflected");
+                        lane.ReflectDmgP1 = true;
+                    }
+                    else if (selectedCard.rank == 11) {//FUNCTIONAL
+                        System.out.println("Next card played on this lane deals Zero Damage");
+                        lane.ZeroDamageALL = true;
+                    }
+                    else if (selectedCard.rank == 12) {
+                        System.out.println("The User gains +2 actions next turn");
+                        lane.P1NextTurnAddActionOrigin = true;
+                    }
+                    else if (selectedCard.rank == 13) {
+                        System.out.println("All Future Cards Placed in this Lane, by the Opponent, will deal -3 Damage.");
+                        lane.P2DmgModifier = lane.P2DmgModifier - 3;
+                    }
+                }
+            }
+
+            else if(selectedCard.suite == "Hearts") {//FUNCTIONAL COMPLETE
+                if (!lane.P1NullifiedEffects) {
+                    if (selectedCard.rank == 1) {//FUNCTIONAL
+                        System.out.println("Dont Lose next Card, Gain +1 Action");
+                        P1NextCardNotLost = true;
+                        P1ActionsLeft++;
+                    }
+                    else if (selectedCard.rank == 11) {//FUNCTIONAL
+                        System.out.println("Regain HP equal to the last card on the Lane.");
+                        if (!lane.isEmpty()) {
+                            p1HP = p1HP + lane.peek().getRank();
+                        }
+                    }
+                    else if (selectedCard.rank == 12) {//FUNCTIONAL
+                        System.out.println("Heal the user by 12 HP");
+                        p1HP = p1HP + 12;
+                    }
+                    else if (selectedCard.rank == 13) {//FUNCTIONAL
+                        System.out.println("All Future Cards Placed here, by the User, will heal +2 HP.");
+                        lane.P1HealPerCard = lane.P1HealPerCard + 2;
+                    }
+                }
+            }//FUNCTIONAL COMPLETE
+
+            else if(selectedCard.suite == "Clubs") {
+                if (!lane.P1NullifiedEffects) {
+                    if (selectedCard.rank == 1) {
+                        System.out.println("Destroy 2 Random Cards in the Opponents Hand.");
+                        //ToDo
+                    }
+                    else if (selectedCard.rank == 11) {//FUNCTIONAL
+                        System.out.println("The Next card played on this lane will deal x2 Damage.");
+                        lane.x2DamageALL = true;
+                    }
+                    else if (selectedCard.rank == 12) {//FUNCTIONAL
+                        System.out.println("This card will deal x2 Damage");
+                        lane.P1x2Damage = true;
+                    }
+                    else if (selectedCard.rank == 13) {//FUNCTIONAL
+                        System.out.println("All Future Cards Placed in this Lane, by the User, will deal +3 Damage.");
+                        lane.P1DmgModifier = lane.P1DmgModifier + 3;
+                    }
+                }
+            }
+
+
+            p1HP = p1HP + lane.P1HealPerCard;
+
+            adjustHP(lane);
+            lane.push(GameUI.P1SelectedCard.card);
+            System.out.println("lane after adding");
+            System.out.println(lane);
+
+
+
+            return true;
+
+        }
+        return false;
+    }
+    public void adjustHP(Deck<Card> lane){
+        int Damage = 0;
+
+        //Calc Damage Difference
+        if(!lane.isEmpty()){
+            Damage = Math.abs((lane.peek().getRank() - GameUI.P1SelectedCard.card.getRank()));
+        }
+        else {
+            Damage = GameUI.P1SelectedCard.card.getRank();
+        }
+
+        Damage = Damage + lane.P1DmgModifier;
+
+        if (lane.ZeroDamageALL) {
+            Damage = 0;
+            lane.ZeroDamageALL = false;
+        }
+
+        if (lane.P1x2Damage) {
+            Damage = Damage * 2;
+            lane.P1x2Damage = false;
+        }
+        if (lane.x2DamageALL) {
+            Damage = Damage * 2;
+            lane.x2DamageALL = false;
+        }
+        //Is the damage Reflected?
+        if (lane.ReflectDmgP2) {
+            p1HP = p1HP - Damage;
+        }
+        else {
+            cpuHP = cpuHP - Damage;
+        }
+
+        System.out.println("Dealt " + Damage + " Damage");
+        System.out.println(cpuHP);
+        GameUI.refreshHPPanels(p1HP,cpuHP);
+
+
     }
 
     //function for placing card,
@@ -121,14 +551,14 @@ public class JackOfAllTrades {
                 Card selectedCard = GameUI.P1SelectedCard.card;
                 switch(sourceButton.getName()){
                     case "Lane1":
-                        checkMatch(lane1,selectedCard);
+                        placeCard(lane1,selectedCard);
 
                         break;
                     case "Lane2":
-                        checkMatch(lane2,selectedCard);
+                        placeCard(lane2,selectedCard);
                         break;
                     case "Lane3":
-                        checkMatch(lane3,selectedCard);
+                        placeCard(lane3,selectedCard);
                         break;
                 }
             }
@@ -136,198 +566,8 @@ public class JackOfAllTrades {
 
         }
         //tests if lane matches card rank or suite, or is empty
-        public boolean checkMatch(Deck<Card> lane,Card selectedCard){
-            if (lane.isEmpty()||(lane.peek().getRank()==selectedCard.getRank() || lane.peek().getSuite().equals(selectedCard.getSuite()))||selectedCard.getRank()==11) {
-                //card linked to the selected card GUI object
-                
-            	P1ActionsLeft--;
-            	
-            	if (!P1NextCardNotLost) {
-            		p1Cards.remove(selectedCard);
-                    GameUI.generateP1Cards(-1);
-            	}
-            	else {
-                	P1NextCardNotLost = false;
-            	}
-                System.out.println("p1cards after placing");
-                System.out.println(p1Cards);
-                
-                //Activate Effects
-                if (selectedCard.suite == "Spades") {
-                	if (selectedCard.rank == 1) { //FUNCTIONAL
-                		System.out.println("Nullify All Active Effects in the lane and gain +1 Action");
-                		lane.P1DmgModifier = 0;
-                		lane.P2DmgModifier = 0;
-                		
-                		lane.P1NullifiedEffects = false;
-                		lane.P2NullifiedEffects = false;
-                		
-                		lane.P1HealPerCard = 0;
-                		lane.P2HealPerCard = 0;
-                		lane.ReflectDmgP1 = false;
-                		lane.ReflectDmgP2 = false;
-                		lane.ZeroDamageALL = false;
-                		lane.x2DamageALL = false;
-                		
-                		if (lane.P1NextTurnAddActionOrigin) {
-                    		P1NextTurnAddAction = false;
-                		}
-                		if (lane.P2NextTurnAddActionOrigin) {
-                    		P2NextTurnAddAction = false;
-                		}
-                		if (lane.P1NextTurnRedActionOrigin) {
-                    		P1NextTurnRedAction = false;
-                		}
-                		if (lane.P2NextTurnRedActionOrigin) {
-                    		P2NextTurnRedAction = false;
-                		}
-                		
-                		
-                		P1ActionsLeft++;
-                	}
-                	else if (selectedCard.rank == 11) {
-                		if (!lane.P1NullifiedEffects) {
-                    		System.out.println("Reveal 2 Random Cards of the Opponent");
-                    		//ToDo
-                		}
-                	}
-                	else if (selectedCard.rank == 12) {
-                		if (!lane.P1NullifiedEffects) {//FUNCTIONAL
-                    		System.out.println("Opponent Loses one action next turn");
-                    		P2ActionsLeft--;
-                		}
-
-                	}
-                	else if (selectedCard.rank == 13) {
-                		if (!lane.P1NullifiedEffects) {
-                    		System.out.println("All Future Cards Placed here, by the Opponent, will have their Effects Nullified.");
-                    		lane.P2NullifiedEffects = true;
-                		}
-
-                	}
-                }
-                
-                else if(selectedCard.suite == "Diamonds") {
-                	if (!lane.P1NullifiedEffects) {
-                    	if (selectedCard.rank == 1) {
-                    		System.out.println("The next attack against the user, in this lane, is reflected");
-                    		lane.ReflectDmgP1 = true;
-                    	}
-                    	else if (selectedCard.rank == 11) {//FUNCTIONAL
-                    		System.out.println("Next card played on this lane deals Zero Damage");
-                    		lane.ZeroDamageALL = true;
-                    	}
-                    	else if (selectedCard.rank == 12) {
-                    		System.out.println("The User gains +2 actions next turn");
-                    		lane.P1NextTurnAddActionOrigin = true;
-                    	}
-                    	else if (selectedCard.rank == 13) {
-                    		System.out.println("All Future Cards Placed in this Lane, by the Opponent, will deal -3 Damage.");
-                    		lane.P2DmgModifier = lane.P2DmgModifier - 3;
-                    	}
-                	}
-                }
-                
-                else if(selectedCard.suite == "Hearts") {//FUNCTIONAL COMPLETE
-                	if (!lane.P1NullifiedEffects) {
-                    	if (selectedCard.rank == 1) {//FUNCTIONAL
-                    		System.out.println("Dont Lose next Card, Gain +1 Action");
-                    		P1NextCardNotLost = true;
-                    		P1ActionsLeft++;
-                    	}
-                    	else if (selectedCard.rank == 11) {//FUNCTIONAL
-                    		System.out.println("Regain HP equal to the last card on the Lane.");
-                    		if (!lane.isEmpty()) {
-                        		p1HP = p1HP + lane.peek().getRank();
-                    		}
-                    	}
-                    	else if (selectedCard.rank == 12) {//FUNCTIONAL
-                    		System.out.println("Heal the user by 12 HP");
-                    		p1HP = p1HP + 12;
-                    	}
-                    	else if (selectedCard.rank == 13) {//FUNCTIONAL
-                    		System.out.println("All Future Cards Placed here, by the User, will heal +2 HP.");
-                    		lane.P1HealPerCard = lane.P1HealPerCard + 2;
-                    	}
-                	}
-                }//FUNCTIONAL COMPLETE
-                
-                else if(selectedCard.suite == "Clubs") {
-                	if (!lane.P1NullifiedEffects) {
-                    	if (selectedCard.rank == 1) {
-                    		System.out.println("Destroy 2 Random Cards in the Opponents Hand.");
-                    		//ToDo
-                    	}
-                    	else if (selectedCard.rank == 11) {//FUNCTIONAL
-                    		System.out.println("The Next card played on this lane will deal x2 Damage.");
-                    		lane.x2DamageALL = true;
-                    	}
-                    	else if (selectedCard.rank == 12) {//FUNCTIONAL
-                    		System.out.println("This card will deal x2 Damage");
-                    		lane.P1x2Damage = true;
-                    	}
-                    	else if (selectedCard.rank == 13) {//FUNCTIONAL
-                    		System.out.println("All Future Cards Placed in this Lane, by the User, will deal +3 Damage.");
-                    		lane.P1DmgModifier = lane.P1DmgModifier + 3;
-                    	}
-                	}
-                }
-                
-                
-                p1HP = p1HP + lane.P1HealPerCard;
-                
-                adjustHP(lane);
-                lane.push(GameUI.P1SelectedCard.card);
-                System.out.println("lane after adding");
-                System.out.println(lane);
 
 
-
-                return true;
-
-            }
-            return false;
-        }
-        public void adjustHP(Deck<Card> lane){
-        	int Damage = 0;
-        	
-        	//Calc Damage Difference
-        	if(!lane.isEmpty()){
-        		Damage = Math.abs((lane.peek().getRank() - GameUI.P1SelectedCard.card.getRank()));
-            }
-            else {
-            	Damage = GameUI.P1SelectedCard.card.getRank();
-            }
-        	
-        	Damage = Damage + lane.P1DmgModifier;
-        	
-        	if (lane.ZeroDamageALL) {
-        		Damage = 0;
-        		lane.ZeroDamageALL = false;
-        	}
-        	
-            if (lane.P1x2Damage) {
-            	Damage = Damage * 2;
-            	lane.P1x2Damage = false;
-            }
-            if (lane.x2DamageALL) {
-            	Damage = Damage * 2;
-            	lane.x2DamageALL = false;
-            }
-            //Is the damage Reflected?
-            if (lane.ReflectDmgP2) {
-            	p1HP = p1HP - Damage;
-            }
-            else {
-            	cpuHP = cpuHP - Damage;
-            }
-            
-        	System.out.println("Dealt " + Damage + " Damage");
-            System.out.println(cpuHP);
-            GameUI.refreshHPPanels(p1HP,cpuHP);
-
-
-        }
     }
 
 

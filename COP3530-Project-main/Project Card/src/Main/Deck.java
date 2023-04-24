@@ -3,7 +3,7 @@ package Main;
 import java.util.Collections;
 import java.util.Stack;
 
-public class Deck<T extends Card> extends Stack<T>{
+public class Deck<T extends Card> extends Stack<Card>{
 
 	public boolean ReflectDmgP1 = false;
 	public boolean ReflectDmgP2 = false;
