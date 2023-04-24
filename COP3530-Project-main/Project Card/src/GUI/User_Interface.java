@@ -12,7 +12,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.xml.datatype.Duration;
 
 
 public class User_Interface {
@@ -35,6 +34,8 @@ public class User_Interface {
 
 	public CardList<Card> P1CardList;
 
+	public CardList<Card> CPUCardList;
+
 	public CardUIObject P1SelectedCard;
 
 	public boolean isCardSelected;
@@ -52,6 +53,8 @@ public class User_Interface {
 	public int P1HP;
 	public int P2HP;
 
+	JPanel CPUCardPanel;
+
 
 
 
@@ -66,6 +69,9 @@ public class User_Interface {
 
 	public void setP1CardList(CardList<Card> list){
 		P1CardList=list;
+	}
+	public void setCPUCardList(CardList<Card> list){
+		CPUCardList=list;
 	}
 	
 	public void InitializeUI(MainMenuUI MainMenu){
@@ -142,6 +148,12 @@ public class User_Interface {
 		
 		
 		//P2CardSlots
+
+//		CardUIObject P2Card1 = new CardUIObject("King of Spades","K", 0, "Spades", 5, "Does Spades Stuff");
+//		JPanel Player2CardSlot1 = new JPanel();
+//		Player2CardSlot1 = P2Card1.InitializeCard();
+//		Player2CardSlot1 = P2Card1.HideCard();
+
 //		CardUIObject P1Card1 = new CardUIObject("King of Spades","K", 0, "Spades", 5, "Does Spades Stuff", this);
 //		JPanel PlayerCardSlot1 = new JPanel();
 //		PlayerCardSlot1 = P1Card1.InitializeCard();
@@ -222,9 +234,9 @@ public class User_Interface {
 		P1CardPanel.setLayout(null);
 		JScrollPane P1CardPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
-		JPanel P2CardPanel = new JPanel();
-		P2CardPanel.setLayout(null);
-		JScrollPane P2CardPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		CPUCardPanel = new JPanel();
+		CPUCardPanel.setLayout(null);
+		JScrollPane CPUCardPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 			
 		//P1 Card Slot Bounds
 			P1CardPane.setBounds(30, 400, 1200, 250);
@@ -242,7 +254,7 @@ public class User_Interface {
 		//P1 Card Slot Bounds
 			
 		//P2 Card Slot Bounds
-			P2CardPane.setBounds(30, 10, 1200, 120);
+			CPUCardPane.setBounds(30, 10, 1200, 120);
 			
 //			Player2CardSlot1.setBounds(0, 0, 120, 100);
 //			Player2CardSlot2.setBounds(120, 0, 120, 100);
@@ -287,8 +299,8 @@ public class User_Interface {
 		P1CardPanel.setPreferredSize(new Dimension(150,250));
 
 		
-		P2CardPane.getViewport().add(P2CardPanel);
-		P2CardPanel.setPreferredSize(new Dimension(1200, 250));
+		CPUCardPane.getViewport().add(CPUCardPanel);
+		CPUCardPanel.setPreferredSize(new Dimension(150, 250));
 		
 
 
@@ -297,7 +309,7 @@ public class User_Interface {
 		CardGameFrame.getContentPane().add(P1UIPanel);
 		CardGameFrame.getContentPane().add(P1CardPane);
 		
-		CardGameFrame.getContentPane().add(P2CardPane);
+		CardGameFrame.getContentPane().add(CPUCardPane);
 		CardGameFrame.getContentPane().add(P2UIPanel);
 		
 		CardGameFrame.getContentPane().add(DrawTablePanel);
@@ -377,6 +389,22 @@ public class User_Interface {
 		P1CardPanel.repaint();
 
 
+	}
+	public void generateCPUCards(){
+		int cardSlotBound = 0;
+		CPUCardPanel.removeAll();
+		for (int i = 0; i < CPUCardList.size(); i++) {
+			Card e = CPUCardList.get(i);
+			CardUIObject newCard = new CardUIObject(e, this);
+			newCard.InitializeCard();
+			//JPanel PlayerCardSlot = newCard.InitializeCard();
+			JPanel PlayerCardSlot=newCard.HideCard();
+
+			PlayerCardSlot.setBounds(cardSlotBound, 0, 120, 117);
+			CPUCardPanel.add(PlayerCardSlot);
+			cardSlotBound += 120;
+			CPUCardPanel.setPreferredSize(new Dimension(cardSlotBound, 100));
+		}
 	}
 //		P1CardPanel.revalidate();
 //		P1CardPanel.repaint();

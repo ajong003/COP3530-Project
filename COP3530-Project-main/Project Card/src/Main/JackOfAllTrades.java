@@ -17,7 +17,7 @@ public class JackOfAllTrades {
     public CardList<Card> p1Cards = new CardList<Card>();
 
     //P2 cards
-    public CardList<Card> p2Cards = new CardList<Card>();
+    public CardList<Card> cpuCards = new CardList<Card>();
 
     public User_Interface GameUI;
 
@@ -35,6 +35,13 @@ public class JackOfAllTrades {
 	boolean P2NextTurnRedAction = false;
     
     int P1ActionsLeft = 1, P2ActionsLeft = 0;
+    public boolean drawLock;
+    public boolean placeLock;
+    public int drawCounter;
+
+
+
+
 
 
     //initialize everything
@@ -77,9 +84,30 @@ public class JackOfAllTrades {
         GameUI.setP1CardList(p1Cards);
         GameUI.generateP1Cards(-1);
 
+        GameUI.setCPUCardList(cpuCards);
+        GameUI.generateCPUCards();
+
         System.out.println(p1Cards);
 
+        cpuDraw();
+        cpuDraw();
 
+
+    }
+
+    public void playerTurn(){
+        drawCounter=0;
+        placeLock=false;
+        drawLock=false;
+
+    }
+    public void cpuTurn(){
+
+    }
+    public void cpuDraw(){
+        drawCard(cpuCards);
+        GameUI.refreshDrawDeckCounter();
+        GameUI.generateCPUCards();
     }
 
     //function for placing card,
@@ -357,7 +385,7 @@ public class JackOfAllTrades {
             //Jacks
             fullDeck.findCard(11,"Hearts").setDescription("<html><b>Power: 11</b><br>Free Placement<br>Regain HP equal to the Power of the Previous card on the Lane.</html>");
             fullDeck.findCard(11,"Spades").setDescription("<html><b>Power: 11</b><br>Free Placement<br>Reveal 2 Random Cards of the Opponent.</html>");
-            fullDeck.findCard(11,"Diamonds").setDescription("<html><b>Power: 11</b><br>Free Placement<br>Next card played on this lane deals Zero Damage<./html>");
+            fullDeck.findCard(11,"Diamonds").setDescription("<html><b>Power: 11</b><br>Free Placement<br>Next card played on this lane deals Zero Damage.</html>");
             fullDeck.findCard(11,"Clubs").setDescription("<html><b>Power: 11</b><br>Free Placement<br>The Next card played on this lane will deal x2 Damage.</html>");
 
             //Queens

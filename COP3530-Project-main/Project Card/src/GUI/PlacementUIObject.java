@@ -51,7 +51,7 @@ public class PlacementUIObject {
 
 		ActivateCardListener DrawCardListen = new ActivateCardListener();
 
-		cardSuiteLabel = new JLabel("" + Suite);
+		cardSuiteLabel = new JLabel("adfadfa" + Suite);
 		basicValueLabel = new JLabel("" + basicValue);
 
 		HiddenLabel = new JLabel("?");
@@ -89,6 +89,7 @@ public class PlacementUIObject {
 		cardSuiteLabel.setFont(new Font("Serif",Font.ITALIC + Font.BOLD,18));
 		cardDescriptionLabel.setFont(new Font("Serif",Font.ROMAN_BASELINE,15));
 		title.setTitleFont(new Font("Serif",Font.BOLD,15));
+		cardSuiteLabel.setBounds(0, 0, 100, 100);
 		
 		PlaceCardBttn.setFont(new Font("Serif",Font.BOLD,20));
 		
@@ -119,6 +120,7 @@ public class PlacementUIObject {
 		PlaceCardBttn.setBackground(Color.white);
 
 
+
 		cardDescriptionLabel.setVisible(true);
 		basicValueLabel.setVisible(true);
 		cardSuiteLabel.setVisible(true);
@@ -134,6 +136,7 @@ public class PlacementUIObject {
 		this.specialValue = Card.specialValue;
 		this.Description = Card.Description;
 		this.basicValue = Card.basicValue;
+		this.cardSuiteLabel.setText(Card.cardSuiteLabel.getText());;
 		
 		basicValueLabel.setText("" + basicValue);
 		cardDescriptionLabel.setText("" + Description);
@@ -141,6 +144,8 @@ public class PlacementUIObject {
 		title.setTitle("" + CardName);
 
 		CardPanel.setVisible(true);
+		CardPanel.revalidate();
+		CardPanel.repaint();
 
 
 
