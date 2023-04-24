@@ -15,8 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import GUI.MainMenuUI.BackBttnListener;
-
 
 public class User_Interface {
 
@@ -30,6 +28,9 @@ public class User_Interface {
 	JLabel HPLabel2 = new JLabel("HP:");
 	JLabel P1HPLabel = new JLabel("100 / 100");
 	JLabel P2HPLabel = new JLabel("100 / 100");
+	JLabel uLost = new JLabel("You Lost");
+	JLabel uWin = new JLabel("You Win!");
+	
 	JButton ExitButton = new JButton("Exit");
 	JFrame CardGameFrame = new JFrame();
 	JPanel P1CardPanel = new JPanel();
@@ -47,7 +48,7 @@ public class User_Interface {
 	public PlacementUIObject Lane1, Lane2, Lane3;
 
 	ExitBttnListener ExitBttnListen = new ExitBttnListener();
-	
+
 	JLabel  count;
 
 	public boolean laneMatch = false;
@@ -74,11 +75,10 @@ public class User_Interface {
 	}
 
 	public void setP1CardList(CardList<Card> list){
-		P1CardList = list;
+		P1CardList=list;
 	}
-	
 	public void setCPUCardList(CardList<Card> list){
-		CPUCardList = list;
+		CPUCardList=list;
 	}
 	
 	public void InitializeUI(MainMenuUI MainMenu){
@@ -133,9 +133,9 @@ public class User_Interface {
 			P2UIPanel.add(P2HPLabel);
 		P2UIPanel.setBounds(1000, 140, 200, 50);
 
-		
-		
-		
+
+
+
 		
 		
 
@@ -404,33 +404,80 @@ public class User_Interface {
 		for (int i = 0; i < CPUCardList.size(); i++) {
 			Card e = CPUCardList.get(i);
 			CardUIObject newCard = new CardUIObject(e, this);
+
 			newCard.InitializeCard();
+			e.registerCardUIObject(newCard);
 			//JPanel PlayerCardSlot = newCard.InitializeCard();
-			JPanel PlayerCardSlot = newCard.HideCard();
+			JPanel PlayerCardSlot=newCard.HideCard();
 
 			PlayerCardSlot.setBounds(cardSlotBound, 0, 120, 117);
 			CPUCardPanel.add(PlayerCardSlot);
 			cardSlotBound += 120;
 			CPUCardPanel.setPreferredSize(new Dimension(cardSlotBound, 100));
-			
-			CPUCardPanel.revalidate();
-			CPUCardPanel.repaint();
 		}
 	}
 //		P1CardPanel.revalidate();
 //		P1CardPanel.repaint();
 
-
-	public class ExitBttnListener implements ActionListener{
+	public void PlayerLost(){
+		CardGameFrame.setVisible(false);
+		JFrame PlayerLost = new JFrame();
 		
-		public void actionPerformed(ActionEvent Click) {
-			System.out.println("Exit Button Pressed");
-			CardGameFrame.setVisible(false);
-			MainMenu.MainMenuFrame.setVisible(true);
-			
-		}
+		JPanel Lost = new JPanel();
+		
+		PlayerLost.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		PlayerLost.setLayout(null);
+		
+		PlayerLost.setTitle("Jack of All Trades");
+		
+		PlayerLost.setSize(1280,720);
+		
+		Lost.setBounds(445, 200, 400, 400);
+		uLost.setFont(new Font("Serif",Font.BOLD,80));
+		Color DarkRed = new Color(180, 0, 50);
+		
+		uLost.setForeground(DarkRed);
+		PlayerLost.setLayout(null);
+		
+		
+		Lost.add(uLost);
+		
+		PlayerLost.getContentPane().add(Lost);
+		
+		PlayerLost.setVisible(true);
+		
 	}
-
+	public void PlayerWon(){
+		CardGameFrame.setVisible(false);
+		JFrame PlayerWon = new JFrame();
+		
+		JPanel Won = new JPanel();
+		
+		PlayerWon.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		PlayerWon.setLayout(null);
+		
+		PlayerWon.setTitle("Jack of All Trades");
+		
+		PlayerWon.setSize(1280,720);
+		
+		Won.setBounds(445, 200, 400, 400);
+		uWin.setFont(new Font("Serif",Font.BOLD,80));
+		Color DarkGreen = new Color(0, 180, 50);
+		
+		uWin.setForeground(DarkGreen);
+		
+		PlayerWon.setLayout(null);
+		
+		
+		Won.add(uWin);
+		
+		PlayerWon.getContentPane().add(Won);
+		
+		PlayerWon.setVisible(true);
+		
+	}
 
 
 	public void refreshHPPanels(int p1hp, int p2hp){
@@ -443,6 +490,16 @@ public class User_Interface {
 		P2UIPanel.revalidate();
 		P2UIPanel.repaint();
 	}
+	public class ExitBttnListener implements ActionListener {
+
+		public void actionPerformed(ActionEvent Click) {
+			System.out.println("Exit Button Pressed");
+			CardGameFrame.setVisible(false);
+			MainMenu.MainMenuFrame.setVisible(true);
+
+		}
+	}
+
 
 
 	

@@ -76,6 +76,9 @@ public class JackOfAllTrades {
         GameUI.Lane1.registerlane(lane1);
         GameUI.Lane2.registerlane(lane2);
         GameUI.Lane3.registerlane(lane3);
+        lane1.registerUIObject(GameUI.Lane1);
+        lane2.registerUIObject(GameUI.Lane2);
+        lane3.registerUIObject(GameUI.Lane3);
         //register buttons
         PlaceButton placeButton = new PlaceButton();
         GameUI.Lane1.registerButton(placeButton);
@@ -91,26 +94,23 @@ public class JackOfAllTrades {
 
         System.out.println(p1Cards);
 
-        cpuDraw();
-        cpuDraw();
-
 
     }
 
-    public void playerTurn(){
-        while(P1ActionsLeft>0){
-
-        }
 
 
-    }
 
-    public void takeTurns(){
-        
-    }
+
     public void cpuTurn(){
         //generate array of all possible cards to be played
+        System.out.println("CPUTURN");
+        Random rnd = new Random();
+        int random = rnd.nextInt(6);
+
         while(CPUActionsLeft>0){
+            System.out.println("CPU ACTIOSN LEFT" + CPUActionsLeft);
+            System.out.println("CPU CARDS");
+            System.out.println(cpuCards);
             ArrayList<Card> playableCardsLane1=new ArrayList<Card>();
             ArrayList<Card> playableCardsLane2=new ArrayList<Card>();
             ArrayList<Card> playableCardsLane3=new ArrayList<Card>();
@@ -120,9 +120,10 @@ public class JackOfAllTrades {
             for(Card card:cpuCards){
                 for(int i=0;i<laneArray.length;i++){
                     Deck<Card> lane=laneArray[i];
-                    if((lane.peek().getRank() == card.getRank() || lane.peek().getSuite().equals(card.getSuite()) || card.getRank()==1)){
+                    if(lane.isEmpty() || (lane.peek().getRank() == card.getRank() || lane.peek().getSuite().equals(card.getSuite()) || card.getRank()==1)){
 
                         playableCardsArray[i].add(card);
+                        System.out.println("ADDING TO PLAYABLE CARDS");
                     }
                 }
 
@@ -177,15 +178,19 @@ public class JackOfAllTrades {
 
             //play max damage card or draw 1/3 chance
             if(maxDamageCard!=null){
-                Random rnd = new Random();
-                if(rnd.nextInt(4)==0){
+
+                System.out.println("RANDOM NUMBER" + random);
+                if(random==0){
+                    System.out.println("RANDOM CPU DRAW");
                     cpuDraw();
                 }else{
+                    System.out.println("PLACECARDCPU");
                     placeCardCPU(maxDamageLane,maxDamageCard);
                 }
 
 
             }else{
+                System.out.println("MAX DAMAGE CARD IS NULL");
                 cpuDraw();
 
             }
@@ -339,12 +344,16 @@ public class JackOfAllTrades {
             lane.push(selectedCard);
             System.out.println("lane after adding");
             System.out.println(lane);
+            lane.uiLane.PlaceCard(selectedCard.cardUIObject);
+            GameUI.generateCPUCards();
+
 
 
 
             return true;
 
         }
+        CPUActionsLeft--;
         return false;
     }
     public boolean placeCard(Deck<Card> lane, Card selectedCard){
@@ -467,13 +476,7 @@ public class JackOfAllTrades {
                 if (!lane.P1NullifiedEffects) {
                     if (selectedCard.rank == 1) {
                         System.out.println("Destroy 2 Random Cards in the Opponents Hand.");
-                        Random rnd = new Random();
-                        cpuCards.remove(rnd.nextInt(cpuCards.size()));
-                        cpuCards.remove(rnd.nextInt(cpuCards.size()));
-                        
-                        GameUI.generateCPUCards();
-                        System.out.println(cpuCards);
-                        
+                        //ToDo
                     }
                     else if (selectedCard.rank == 11) {//FUNCTIONAL
                         System.out.println("The Next card played on this lane will deal x2 Damage.");
@@ -518,14 +521,13 @@ public class JackOfAllTrades {
 
         Damage = Damage + lane.P1DmgModifier;
 
-        
         if (lane.ZeroDamageActive) {
-        	Damage = 0;
-        	lane.ZeroDamageActive = false;
+            Damage = 0;
+            lane.ZeroDamageActive = false;
         }
-        
+
         if (lane.ZeroDamageALL) {
-        	lane.ZeroDamageActive = true;
+            Damage = 0;
             lane.ZeroDamageALL = false;
         }
 
@@ -544,10 +546,19 @@ public class JackOfAllTrades {
         else {
             cpuHP = cpuHP - Damage;
         }
+        
+        if(cpuHP < 0) {
+        	GameUI.PlayerWon();
+        }
+        else if (p1HP <= 0) {
+        	GameUI.PlayerLost();
+        }
 
         System.out.println("Dealt " + Damage + " Damage");
         System.out.println(cpuHP);
         GameUI.refreshHPPanels(p1HP,cpuHP);
+
+
     }
     public void adjustHPCPU(Deck<Card> lane, Card SelectedCard){
         int Damage = 0;
@@ -560,16 +571,16 @@ public class JackOfAllTrades {
             Damage = SelectedCard.getRank();
         }
 
-        Damage = Damage + lane.P2DmgModifier;
+        Damage = Damage + lane.P1DmgModifier;
 
-        
+
         if (lane.ZeroDamageActive) {
-        	Damage = 0;
-        	lane.ZeroDamageActive = false;
+            Damage = 0;
+            lane.ZeroDamageActive = false;
         }
-        
+
         if (lane.ZeroDamageALL) {
-        	lane.ZeroDamageActive = true;
+            lane.ZeroDamageActive = true;
             lane.ZeroDamageALL = false;
         }
 
@@ -588,12 +599,18 @@ public class JackOfAllTrades {
         else {
             p1HP = p1HP - Damage;
         }
+        
+        if(cpuHP < 0) {
+        	GameUI.PlayerWon();
+        }
+        else if (p1HP <= 0) {
+        	GameUI.PlayerLost();
+        }
 
-        System.out.println("CPU Dealt " + Damage + " Damage");
+        System.out.println("Dealt " + Damage + " Damage");
         System.out.println(cpuHP);
         GameUI.refreshHPPanels(p1HP,cpuHP);
     }
-    
 
     //function for placing card,
     //remove Card linked to p1selectedcard from UI object from p1cardlist
@@ -607,6 +624,7 @@ public class JackOfAllTrades {
                 switch(sourceButton.getName()){
                     case "Lane1":
                         placeCard(lane1,selectedCard);
+
                         break;
                     case "Lane2":
                         placeCard(lane2,selectedCard);
@@ -614,6 +632,11 @@ public class JackOfAllTrades {
                     case "Lane3":
                         placeCard(lane3,selectedCard);
                         break;
+                }
+                if(P1ActionsLeft==0){
+                    cpuTurn();
+                    CPUActionsLeft=1;
+                    P1ActionsLeft=1;
                 }
             }
 
@@ -630,11 +653,18 @@ public class JackOfAllTrades {
         public class DrawButton implements ActionListener {
 
             public void actionPerformed(ActionEvent Click) {
+                P1ActionsLeft--;
+                System.out.println("p1actionsleft = " + P1ActionsLeft);
                 int index=drawCard(p1Cards);
                 GameUI.generateP1Cards(index);
                 GameUI.refreshDrawDeckCounter();
                 System.out.println(p1Cards);
                 System.out.println(drawDeck);
+                if(P1ActionsLeft==0){
+                    cpuTurn();
+                    CPUActionsLeft=1;
+                    P1ActionsLeft=1;
+                }
 
             }
         }
@@ -642,6 +672,7 @@ public class JackOfAllTrades {
         //does returns false if drawDeck is empty
 
         public int drawCard(CardList<Card> list) {
+
             int index=-1;
             if (!drawDeck.isEmpty()) {
                 Card newCard=drawDeck.pop();

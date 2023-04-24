@@ -1,5 +1,7 @@
 package Main;
 
+import GUI.CardUIObject;
+
 //class for representing playing card objects
 public class Card implements Comparable<Card>{
   //
@@ -8,12 +10,17 @@ public class Card implements Comparable<Card>{
   int rank;
   String description;
 
+  CardUIObject cardUIObject;
+
 
   //card object constructor
   public Card(String suite, int rank,String description){
       this.suite=suite;
       this.rank=rank;
       this.description = description;
+  }
+  public void registerCardUIObject(CardUIObject object){
+      cardUIObject =object;
   }
 
   //returns the difference in card rank
